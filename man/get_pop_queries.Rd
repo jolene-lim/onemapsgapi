@@ -10,7 +10,7 @@ get_pop_queries(
   planning_areas,
   years,
   gender = NULL,
-  sleep = NULL
+  parallel = FALSE
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ get_pop_queries(
 
 \item{gender}{Optional, if specified only records for that gender will be returned. This parameter is only valid for the \code{"getEconomicStatus"}, \code{"getEthnicGroup"}, \code{"getMaritalStatus"} and \code{"getPopulationAgeGroup"} endpoints. If specified for other endpoints, the parameter will be dropped.}
 
-\item{sleep}{Optional sleep time for iterative calls}
+\item{parallel}{Default = \code{FALSE}. Whether to run API calls in parallel or sequentially (default).}
 }
 \value{
 A tibble with each row representing a town in a particular year for a particular gender, and columns with the variables returned by the API endpoint.

@@ -57,7 +57,7 @@ Population Query API endpoints allow users to pull socio-economic datasets by pl
 get_pop_query(token, "getOccupation", "Bedok", "2010")
 ```
 
-- `get_pop_queries()` allows users to query multiple datasets for multiple towns and years. Note that rate-limiting is essential for large queries.
+- `get_pop_queries()` allows users to query multiple datasets for multiple towns and years. For large queries, enabling parallel iterations is recommended.
 
 ```{r}
 # example: return occupation summary data and literacy summary data for Bedok and Yishun towns in year 2010
@@ -86,7 +86,7 @@ get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "pt",
           mode = "bus", max_dist = 300, n_itineraries = 2)
 ```
 
-- `compare_routes()` allows the calculation of total time and distance for a tibble of start and end points. Users input a tibble of start and end points (and potentially other variables) and the function returns a tibble with additional columns, `total_time` and `total_dist`.
+- `compare_routes()` allows the calculation of total time and distance for a tibble of start and end points. Users input a tibble of start and end points (and potentially other variables) and the function returns a tibble with additional columns, `total_time` and `total_dist`. For large queries, allowing parallel iterations is recommended.
 
 ```{r}
 # example: return tibble named df

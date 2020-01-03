@@ -16,7 +16,8 @@ compare_routes(
   time = format(Sys.time(), format = "\%T"),
   pt_mode = "TRANSIT",
   pt_max_dist = NULL,
-  as_wide = TRUE
+  as_wide = TRUE,
+  parallel = FALSE
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ compare_routes(
 \item{pt_max_dist}{Optional if \code{route = "pt"}. Maximum walking distance}
 
 \item{as_wide}{Default = \code{TRUE}. Whether to return output as a list as a long tibble with each row a route, or a wide tibble with the same number of rows as the input tibble.}
+
+\item{parallel}{Default = \code{FALSE}. Whether to run API calls in parallel or sequentially (default).}
 }
 \value{
 Original dataframe with total time and total distance for each route type.

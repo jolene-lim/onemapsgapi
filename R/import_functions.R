@@ -4,5 +4,7 @@
 #' @importFrom stringr str_c str_sub str_detect str_remove str_replace str_to_lower str_to_upper regex
 #' @importFrom tidyr %>% unite spread separate crossing
 #' @importFrom purrr map pmap map_chr map_int map_dbl map_lgl reduce flatten
+#' @importFrom future plan multicore multisession
+#' @importFrom furrr future_pmap
 
 NULL

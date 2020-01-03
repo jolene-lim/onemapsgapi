@@ -8,7 +8,7 @@
 #' @param planning_areas Town for which the data should be retrieved.
 #' @param years Year for which the data should be retrieved.
 #' @param gender Optional, if specified only records for that gender will be returned. This parameter is only valid for the \code{"getEconomicStatus"}, \code{"getEthnicGroup"}, \code{"getMaritalStatus"} and \code{"getPopulationAgeGroup"} endpoints. If specified for other endpoints, the parameter will be dropped.
-#' @param sleep Optional sleep time for iterative calls
+#' @param parallel Default = \code{FALSE}. Whether to run API calls in parallel or sequentially (default).
 #' @return A tibble with each row representing a town in a particular year for a particular gender, and columns with the variables returned by the API endpoint.
 #' If any API call returns no data, the values will be NA but the row will be returned. However, if all data_types do not return data for that town and year, no row will be returned for it.
 #'
@@ -32,7 +32,7 @@
 #'     "Bedok", c("2010", "2012"))} # no records for 2012
 
 
-get_pop_queries <- function(token, data_types, planning_areas, years, gender = NULL, sleep = NULL) {
+get_pop_queries <- function(token, data_types, planning_areas, years, gender = NULL, parallel = FALSE) {
 
   # make tibble of query params
   query_params = crossing(planning_areas, years)
@@ -43,9 +43,19 @@ get_pop_queries <- function(token, data_types, planning_areas, years, gender = N
 
   # query params for each data type
   for (i in data_types) {
-    query_outputs <- query_params %>%
-      pmap(function(planning_areas, years) get_pop_query(token = token, data_type = i, planning_area = planning_areas, year = years, gender = gender, sleep = sleep)) %>%
-      reduce(bind_rows)
+
+    # iterate parallel or sequentially through query params
+    if (parallel) {
+      if (Sys.info()[["sysname"]] == "Windows") {plan(multisession)} else {plan(multicore)}
+
+      query_outputs <- future_pmap(query_params, function(planning_areas, years) get_pop_query(token = token, data_type = i, planning_area = planning_areas, year = years, gender = gender))
+
+    } else {
+
+      query_outputs <- pmap(query_params, function(planning_areas, years) get_pop_query(token = token, data_type = i, planning_area = planning_areas, year = years, gender = gender))
+    }
+
+    query_outputs <- reduce(query_outputs, bind_rows)
 
     output_list[[i]] <- query_outputs
   }

@@ -195,6 +195,14 @@ get_pop_queries(token, c("getEconomicStatus", "getOccupation"),
   scroll_box(width = "100%")
 ```
 
+Finally, to allow for faster computation, API calls can be called in parallel using `parallel = TRUE`. This is recommended for large requests, although it is noted that this API call tends to still be rather slow.
+
+```{r, eval = FALSE}
+# example: no records for 2012
+get_pop_queries(token, c("getEconomicStatus", "getOccupation"),
+                "Bedok", c("2010", "2012"),
+                parallel = TRUE)
+```
 
 ## Route Service
 These functions are a wrapper for the [Route Service API](https://docs.onemap.sg/#route). The Route Service API provides users a way to query the route taken from one point to another. It provides information about the total time and distance taken for the route, route instructions and other infomation e.g. elevation, for a variety of routes (public transport, drive, walk, cycle). This package provides three different functions associated with this API, each serving different purposes. 
@@ -312,4 +320,12 @@ compare_routes(token, sample,
     "start_lat", "start_lon", "end_lat", "end_lon",
     routes = c("cycle", "walk")) %>%
   kable() %>% kable_styling()
+```
+
+Lastly, it recommended for users working with large matrices to set `parallel = TRUE` for more efficient computation.
+```{r, eval = FALSE}
+compare_routes(token, sample[1:3, ],
+    "start_lat", "start_lon", "end_lat", "end_lon",
+    routes = c("cycle", "walk"),
+    parallel = TRUE)
 ```

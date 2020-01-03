@@ -18,8 +18,10 @@ Imports:
     dplyr,
     purrr,
     stringr,
-    tidyr
-RoxygenNote: 6.1.99.9001
+    tidyr,
+    future,
+    furrr
+RoxygenNote: 7.0.2
 Suggests: 
     knitr,
     rmarkdown,

@@ -8,7 +8,6 @@
 #' @param planning_area Town for which the data should be retrieved.
 #' @param year Year for which the data should be retrieved.
 #' @param gender Optional, if specified only records for that gender will be returned. This parameter is only valid for the \code{"getEconomicStatus"}, \code{"getEthnicGroup"}, \code{"getMaritalStatus"} and \code{"getPopulationAgeGroup"} endpoints. If specified for other endpoints, the parameter will be dropped.
-#' @param sleep Optional sleep time for iterative calls
 #' @return A tibble with 1 row and values for all the corresponding variables returned by the API endpoint.
 #' If gender is not specified for endpoints with a gender parameter, records for total, male and female will be returned. The notable exception to this is for the \code{"getEthnicGroup"} endpoint, which only returns the total record if gender is not specified. This is because by default, this is the only API endpoint with a gender parameter that does not return gender breakdown by default.
 #' If an error occurs, the function will return a NULL value
@@ -30,7 +29,7 @@
 #' \donttest{get_pop_query(token, "getReligion", "faketown", "2010")}
 
 
-get_pop_query <- function(token, data_type, planning_area, year, gender = NULL, sleep = NULL) {
+get_pop_query <- function(token, data_type, planning_area, year, gender = NULL) {
   # clean planning_area
   planning_area <- str_replace(planning_area, " ", "+")
 
@@ -44,7 +43,6 @@ get_pop_query <- function(token, data_type, planning_area, year, gender = NULL, 
                  sep = "")
 
   response <- GET(query)
-  if (!is.null(sleep)) {Sys.sleep(sleep)}
 
   # error handling
   if (http_error(response)) {

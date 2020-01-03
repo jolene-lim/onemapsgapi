@@ -4,14 +4,7 @@
 \alias{get_pop_query}
 \title{Get Population Data}
 \usage{
-get_pop_query(
-  token,
-  data_type,
-  planning_area,
-  year,
-  gender = NULL,
-  sleep = NULL
-)
+get_pop_query(token, data_type, planning_area, year, gender = NULL)
 }
 \arguments{
 \item{token}{User's API token. This can be retrieved using \code{\link{get_token}}}
@@ -23,8 +16,6 @@ get_pop_query(
 \item{year}{Year for which the data should be retrieved.}
 
 \item{gender}{Optional, if specified only records for that gender will be returned. This parameter is only valid for the \code{"getEconomicStatus"}, \code{"getEthnicGroup"}, \code{"getMaritalStatus"} and \code{"getPopulationAgeGroup"} endpoints. If specified for other endpoints, the parameter will be dropped.}
-
-\item{sleep}{Optional sleep time for iterative calls}
 }
 \value{
 A tibble with 1 row and values for all the corresponding variables returned by the API endpoint.
