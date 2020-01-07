@@ -148,6 +148,6 @@ get_route <- function(token, start, end, route, date = Sys.Date(), time = format
     output <- result
   }
 
-  output
+  return(output)
 
 }

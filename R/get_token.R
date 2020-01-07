@@ -27,6 +27,7 @@ get_token <- function(email, password, hide_message = FALSE) {
     status <- status_code(response)
     output <- NULL
     warning(paste("The request produced a", status, "error", sep = " "))
+    return(output)
 
   # else return results
   } else {

@@ -1,8 +1,12 @@
-#' Compare Routes' Travel Time and Distance
+#' Get Travel Time and Distance
 #'
 #' @description
-#' This function is a wrapper for the \href{https://docs.onemap.sg/#route}{Route Service API}. It is similar to \code{\link{get_summ_route}}, except it takes in a dataframe of start and end coordinates and returns the same dataframe with additional total time and total distance columns.
+#' This function is a wrapper for the \href{https://docs.onemap.sg/#route}{Route Service API}. It takes in a dataframe of start and end coordinates and returns the same dataframe with additional total time and total distance columns.
 #' The function also accepts multiple arguments for `route` and `pt_mode`, allowing users to compare various route options.
+#'
+#' Note that if `as_wide = TRUE` is selected, any columns with identical names as the additional output columns will be overwritten.
+#' Also, if \code{as_wide = TRUE}, only unique pairs of start and end points should be used. Regardless, using only unique pairs and joining data back is also a generally recommended workflow to reduce computation time.
+#'
 #'
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param df The input dataframe of start and end coordinates (the dataframe can have additional variables)
@@ -32,26 +36,27 @@
 #'     add_info = c("a", "b", "c", "d"))
 #'
 #' # no error, wide format
-#' \donttest{compare_routes(token, sample[1:3, ],
+#' \donttest{get_travel(token, sample[1:3, ],
 #'     "start_lat", "start_lon", "end_lat", "end_lon",
 #'     routes = c("cycle", "walk"))}
-#' \donttest{compare_routes(token, sample[1:3, ],
+#' \donttest{get_travel(token, sample[1:3, ],
 #'     "start_lat", "start_lon", "end_lat", "end_lon",
 #'     routes = c("drive", "pt"), pt_mode = c("bus", "transit"))}
 #'
 #' # no error, long format
-#' \donttest{compare_routes(token, sample[1:3, ],
+#' \donttest{get_travel(token, sample[1:3, ],
 #'     "start_lat", "start_lon", "end_lat", "end_lon",
 #'     routes = c("walk", "pt"), pt_mode = c("bus", "transit"),
 #'     as_wide = FALSE)}
 #'
 #' # with error
-#' \donttest{compare_routes(token, sample,
+#' # warning message will show start/end/route/pt_mode for which an error occurred
+#' \donttest{get_travel(token, sample,
 #'     "start_lat", "start_lon", "end_lat", "end_lon",
 #'     routes = c("cycle", "walk"))}
 
 
-compare_routes <- function(token, df, origin_lat, origin_lon, destination_lat, destination_lon, routes, date = Sys.Date(), time = format(Sys.time(), format = "%T"), pt_mode = "TRANSIT", pt_max_dist = NULL, as_wide = TRUE, parallel = FALSE) {
+get_travel <- function(token, df, origin_lat, origin_lon, destination_lat, destination_lon, routes, date = Sys.Date(), time = format(Sys.time(), format = "%T"), pt_mode = "TRANSIT", pt_max_dist = NULL, as_wide = TRUE, parallel = FALSE) {
 
   # preallocate list to hold each route output
   if ("pt" %in% routes) {
@@ -66,54 +71,38 @@ compare_routes <- function(token, df, origin_lat, origin_lon, destination_lat, d
   # subset variables used to query API
   var_df <- select(df, olat = origin_lat, olon = origin_lon, dlat = destination_lat, dlon = destination_lon)
 
+  # set up parallel option if requested
+  if (parallel) {
+    if (Sys.info()[["sysname"]] == "Windows") {plan(multisession)} else {plan(multicore)}
+  }
+
   # query API iteratively using get_summ_route()
   for (i in routes) {
-    if (str_sub(i, 1, 2) == "pt") {
 
-      # parallel or sequential API call for each iteration
-      if (parallel) {
-        if (Sys.info()[["sysname"]] == "Windows") {plan(multisession)} else {plan(multicore)}
-
-        route_output <- var_df %>%
-          future_pmap(function(olat, olon, dlat, dlon) get_summ_route(token = token, start = c(olat, olon), end = c(dlat, dlon), route = "pt", date = date, time = time, mode = str_remove(i, "pt-"), max_dist = pt_max_dist))
-      } else {
-
-        route_output <- var_df %>%
-          pmap(function(olat, olon, dlat, dlon) get_summ_route(token = token, start = c(olat, olon), end = c(dlat, dlon), route = "pt", date = date, time = time, mode = str_remove(i, "pt-"), max_dist = pt_max_dist))
-      }
-
-      # process output
-      route_output <- route_output %>%
-        reduce(bind_rows) %>%
-        mutate(route = i)
-
-      route_output <- bind_cols(df, route_output) %>% select(- c("origin_lat", "origin_lon", "destination_lat", "destination_lon"))
-
+    # parallel or sequential API call for each iteration
+    if (parallel) {
+      route_output <- var_df %>%
+        future_pmap(function(olat, olon, dlat, dlon) get_summ_route(token = token, start = c(olat, olon), end = c(dlat, dlon),
+                                                                    route = ifelse(str_sub(i, 1, 2) == "pt", "pt", i), date = date, time = time,
+                                                                    mode = str_remove(i, "pt-"), max_dist = pt_max_dist))
     } else {
 
-      # parallel or sequential API call for each iteration
-      if (parallel) {
-        if (Sys.info()[["sysname"]] == "Windows") {plan(multisession)} else {plan(multicore)}
-
-        route_output <- var_df %>%
-          future_pmap(function(olat, olon, dlat, dlon) get_summ_route(token = token, start = c(olat, olon), end = c(dlat, dlon), route = i, date = date, time = time))
-
-        } else {
-
-        route_output <- var_df %>%
-          pmap(function(olat, olon, dlat, dlon) get_summ_route(token = token, start = c(olat, olon), end = c(dlat, dlon), route = i, date = date, time = time))
-      }
-
-      route_output <- route_output %>%
-        reduce(bind_rows) %>%
-        mutate(route = i)
-
-      route_output <- bind_cols(df, route_output) %>% select(- c("origin_lat", "origin_lon", "destination_lat", "destination_lon"))
+      route_output <- var_df %>%
+        pmap(function(olat, olon, dlat, dlon) get_summ_route(token = token, start = c(olat, olon), end = c(dlat, dlon),
+                                                             route = ifelse(str_sub(i, 1, 2) == "pt", "pt", i), date = date, time = time,
+                                                             mode = str_remove(i, "pt-"), max_dist = pt_max_dist))
     }
+
+    # process output
+    route_output <- route_output %>%
+      reduce(bind_rows) %>%
+      mutate(route = i)
+
+    route_output <- bind_cols(df, route_output)
 
     output_list[[i]] <- route_output
 
-  }
+ }
 
   # compile into either long or wide df
   if (as_wide) {

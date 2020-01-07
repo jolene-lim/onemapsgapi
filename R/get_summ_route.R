@@ -12,21 +12,13 @@
 #' @param time Default = current time. Time for which route is requested.
 #' @param mode Required if \code{route = "pt"}. Accepted values are \code{transit}, \code{bus} or \code{rail}
 #' @param max_dist Optional if \code{route = "pt"}. Maximum walking distance
-#' @param show_OD Default = \code{TRUE}. Whether to return variables \code{origin_lat}, \code{origin_lon}, \code{destination_lat} and \code{destination_lon}, which represent the start and end coordinates of the route.
-#' @return If no error occurs and \code{show_OD = TRUE}, a tibble of 1 x 6 with the variables:
+#' @return If no error occurs, a tibble of 1 x 2 with the variables:
 #' \describe{
 #'   \item{total_time}{The total time taken for this route}
 #'   \item{total_dist}{The total distance travelled for this route}
-#'   \item{origin_lat}{Coordinate of start point latitude}
-#'   \item{origin_lon}{Coordinate of start point longitude}
-#'   \item{destination_lat}{Coordinate of end point latitude}
-#'   \item{destination_lon}{Coordinate of end point longitude}
 #' }
 #'
-#' If \code{show_OD = FALSE}, a 1 x 2 tibble with only \code{total_time} and \code{total_dist} will be returned.
 #' If an error occurs, the output will be \code{NA}, along with a warning message.
-#'
-#' @export
 #'
 #' @examples
 #' # returns output tibble
@@ -41,7 +33,7 @@
 #' \donttest{get_summ_route(token, c(300, 300), c(400, 500), "cycle")}
 #' \donttest{get_summ_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "fly")}
 
-get_summ_route <- function(token, start, end, route, date = Sys.Date(), time = format(Sys.time(), format = "%T"), mode = NULL, max_dist = NULL, show_OD = TRUE) {
+get_summ_route <- function(token, start, end, route, date = Sys.Date(), time = format(Sys.time(), format = "%T"), mode = NULL, max_dist = NULL) {
   # query API
   url <- "https://developers.onemap.sg/privateapi/routingsvc/route?"
   route <- str_to_lower(route)
@@ -67,7 +59,9 @@ get_summ_route <- function(token, start, end, route, date = Sys.Date(), time = f
     status <- status_code(response)
     output <- tibble(total_time = NA,
                      total_dist = NA)
-    warning(paste("The request produced a", status, "error", sep = " "))
+    warning(paste("The request (", start , "/", end, "/", route, "/", mode, ") ",
+                  "produced a ",
+                  status, " error", sep = ""))
 
     # break function
     return(output)
@@ -78,9 +72,14 @@ get_summ_route <- function(token, start, end, route, date = Sys.Date(), time = f
 
   # error check: invalid parameters
   if (names(output)[1] == "error") {
-    warning(output$error)
+    warning("The request (", paste(start, sep = ","), "/", paste(end, sep = ","), "/",
+            route, "/", mode, ") ",
+            "produced an error: ",
+            output$error, sep = "")
+
     output <- tibble(total_time = NA,
                      total_dist = NA)
+
     return(output)
 
   } else if (route == "pt") {
@@ -94,14 +93,6 @@ get_summ_route <- function(token, start, end, route, date = Sys.Date(), time = f
 
   }
 
-  if (show_OD) {
-    OD <- tibble(origin_lat = start[2], origin_lon = start[1],
-                 destination_lat = end[2], destination_lon = end[1])
-
-    output <- OD %>%
-      bind_cols(output)
-  }
-
-  output
+  return(output)
 
 }

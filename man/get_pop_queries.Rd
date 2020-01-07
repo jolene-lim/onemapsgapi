@@ -24,14 +24,14 @@ get_pop_queries(
 
 \item{gender}{Optional, if specified only records for that gender will be returned. This parameter is only valid for the \code{"getEconomicStatus"}, \code{"getEthnicGroup"}, \code{"getMaritalStatus"} and \code{"getPopulationAgeGroup"} endpoints. If specified for other endpoints, the parameter will be dropped.}
 
-\item{parallel}{Default = \code{FALSE}. Whether to run API calls in parallel or sequentially (default).}
+\item{parallel}{Default = \code{FALSE}. Whether to run API calls in parallel or sequentially (default). Enabling parallel iterations is highly recommended for when querying multiple data types/years/towns.}
 }
 \value{
 A tibble with each row representing a town in a particular year for a particular gender, and columns with the variables returned by the API endpoint.
 If any API call returns no data, the values will be NA but the row will be returned. However, if all data_types do not return data for that town and year, no row will be returned for it.
 }
 \description{
-This function is a wrapper for the \href{https://docs.onemap.sg/#population-query}{Population Query API}. It is similar to \code{\link{get_pop_query}} but allows for querying of multiple data types for multiple towns and years.
+This function is a wrapper for the \href{https://docs.onemap.sg/#population-query}{Population Query API}. It allows for querying of multiple Popquery data types for multiple towns and years.
 }
 \examples{
 # output with no NA
@@ -47,6 +47,7 @@ This function is a wrapper for the \href{https://docs.onemap.sg/#population-quer
     "Bedok", "2010", gender = "female")}
 
 # output with some town-year queries without record due to no data
+# warning message will show data_type/town/year/gender for which an error occurred
 \donttest{get_pop_queries(token, c("getEconomicStatus", "getOccupation"),
     "Bedok", c("2010", "2012"))} # no records for 2012
 }

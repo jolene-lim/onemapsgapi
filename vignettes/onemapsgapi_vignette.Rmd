@@ -41,27 +41,60 @@ The function will also print a message informing users of the token's expiry dat
 ## Themes
 These functions are wrappers for the [Themes API](https://docs.onemap.sg/#themes) endpoints. Themes in the OneMap SG API refer to types of locations, such as kindergartens, parks, hawker centres etc.
 
+### Check Theme Status
+The `get_theme_status()` function allows users to check if data associated with a theme has been updated after a certain time. It returns a named logical.
+
+```{r, eval = NOT_CRAN}
+# returns named logical
+get_theme_status(token, "kindergartens")
+get_theme_status(token, "2020-01-01", "12:00:00", "hotels")
+```
+
+```{r, eval = NOT_CRAN}
+# returns NULL, warning message shows status code
+get_theme_status("invalid_token", "blood_bank")
+```
+
+```{r, eval = NOT_CRAN}
+# returns NULL, warning message shows error
+get_theme_status(token, "invalid_theme")
+```
+
+### Get Theme Information
+The `get_theme_info()` function allows users to get information related to a specific theme. It returns a named character vector with Theme Name and Query Name.
+
+```{r, eval = NOT_CRAN}
+# returns named character vector
+get_theme_status(token, "kindergartens")
+```
+
+If an error occurs, the function returns `NULL`, along with a warning message.
+```{r, eval = NOT_CRAN}
+# returns NULL, warning message shows status code
+get_theme_status("invalid_token", "blood_bank")
+```
+
+```{r, eval = NOT_CRAN}
+# returns NULL, warning message shows error
+get_theme_status(token, "invalid_theme")
+```
+
 ### Find Themes of Interest
 The `search_themes()` function allows users to find details of themes of interest. It returns a tibble of themes matching user's search terms. Alternatively, if no search terms are added, a tibble of all themes available through the API is returned. The variable **THEMENAME** in the output tibble serves as the input for getting theme data.
 
 ```{r, eval = NOT_CRAN}
 # return all themes related to "hdb" or "parks"
-search_themes(token, "hdb", "parks") %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(height = "300px", width = "100%")
+search_themes(token, "hdb", "parks")
 ```
 
 ```{r, eval = NOT_CRAN}
 # return all possible themes
-search_themes(token) %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(height = "300px", width = "100%")
+search_themes(token)
 ```
 
 ```{r, eval = NOT_CRAN}
-search_themes(token, more_info = FALSE) %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(height = "300px")
+# return all possible themes, with less variables
+search_themes(token, more_info = FALSE)
 ```
 
 If an error occurs, the function returns `NULL`, along with a warning message.
@@ -105,55 +138,100 @@ get_theme(token, "ura_parking_lot", "1.291789,%20103.7796402,1.3290461,%20103.87
   scroll_box(width = "100%")
 ```
 
+## Planning Areas
+These functions are a wrapper for the [Planning Area API](https://docs.onemap.sg/#planning-area). Planning Area API endpoints allow users to get spatial data and data related to the planning areas in Singapore. This package provides users with the ability to query the data and optionally handles necessary spatial data wrangling on behalf of the user.
+
+### Get Planning Areas
+The function `get_planning_areas()` allows users to query all the spatial polygons associated with Singapore's planning areas, for certain years. The function also optionally helps users transform raw geojson strings into `sf` or `sp` objects.
+
+If the parameter read is not specified, the function returns a raw JSON object with planning names and geojson string vectors. 
+
+```{r, eval = NOT_CRAN}
+# returns raw JSON object
+get_planning_areas(token)
+get_planning_areas(token, 2008)
+```
+
+If read is specified, any missing geojson objects will be dropped (this affects the "Others" planning area returned by the API). The returned outputs are NOT projected. 
+
+If read = "sf", the function returns a single "sf" dataframe with 2 columns: "name" (name of planning area) and "geometry", which contains the simple features. 
+```{r, eval = NOT_CRAN}
+# returns dataframe of class "sf"
+get_planning_areas(token, read = "sf")
+```
+
+If read = "rgdal", the function returns a SpatialPolygonsDataFrame of "sp" class. The names of each planning area is recorded in the "name" column of the dataframe.
+```{r, eval = NOT_CRAN}
+# returns SpatialPolygonsDataFrame ("sp" object)
+get_planning_areas(token, read = "rgdal")
+```
+
+Note that if the user specifies a read method but does not have the corresponding package installed, the function will return the raw JSON and print a warning message.
+
+If an error occurs, the function returns NULL and a warning message is printed.
+```{r, eval = NOT_CRAN}
+# error: output is NULL, warning message shows status code
+get_planning_areas("invalid_token")
+```
+
+### Get Planning Area Names
+The function `get_planning_names()` allows users to query all planning area names for certain years. The function returns a tibble with planning area code and planning area name.
+
+```{r, eval = NOT_CRAN}
+# returns tibble
+get_planning_names(token)
+get_planning_names(token, 2008)
+```
+
+If an error occurs, the function returns NULL and a warning message is printed.
+```{r, eval = NOT_CRAN}
+# error: output is NULL, warning message shows status code
+get_planning_names("invalid_token")
+```
+
+### Get Planning Area Polygon
+The function `get_planning_polygon()` allows users to query a particular planning area polygon containing the specified location point. The function also optionally helps users transform raw geojson string output into `sf` or `sp` objects.
+
+If the parameter read is not specified, the function returns a raw JSON object a list containing the planning area name and a geojson string representing the polygon. 
+
+```{r, eval = NOT_CRAN}
+# returns raw JSON object
+get_planning_polygon(token)
+get_planning_polygon(token, 2008)
+```
+
+If read = "sf", the function returns a 1 x 2 "sf" dataframe: "name" (name of planning area) and "geometry", which contains the simple feature. 
+```{r, eval = NOT_CRAN}
+# returns dataframe of class "sf"
+get_planning_polygon(token, read = "sf")
+```
+
+If read = "rgdal", the function returns a SpatialPolygonsDataFrame of "sp" class. The names of the planning area is recorded in the "name" column of the dataframe. If an error occurs, the function returns NULL and a warning message is printed.
+```{r, eval = NOT_CRAN}
+# returns SpatialPolygonsDataFrame ("sp" object)
+get_planning_polygon(token, read = "rgdal")
+```
+
+Note that if the user specifies a read method but does not have the corresponding package installed, the function will return the raw JSON and print a warning message.
+
+If an error occurs, the function returns NULL and a warning message is printed.
+```{r, eval = NOT_CRAN}
+# error: output is NULL, warning message shows status code
+get_planning_polygon("invalid_token")
+get_planning_polygon(token, "invalidlat", "invalidlon")
+```
+
 ## Population Query
 These functions are a wrapper for the [Population Query API](https://docs.onemap.sg/#population-query). Population Query API endpoints allow users to pull socio-economic datasets by planning area, which each endpoint representing a dataset (e.g. `getPopulationAgeGroup` provides age group summary statistics by planning area). This package combines querying different Popquery API endpoints into single functions. 
 
-### Specific Query
-The function `get_pop_query()` allows users to query a specific dataset for a specific town, year and gender (optional). It is faster for users who only require a specific value. 
-
-The function returns a tibble with 1 row and values for all the corresponding variables returned by the API endpoint.
-
-```{r, eval = NOT_CRAN}
-# example: return occupation summary data for Bedok town in year 2010
-get_pop_query(token, "getOccupation", "Bedok", "2010") %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(width = "100%")
-```
+### Multiple Queries
+The function `get_pop_queries()` allows users to query multiple datasets for multiple towns, years and genders. 
 
 The `gender` parameter is only valid for the **getEconomicStatus**, **getEthnicGroup**, **getMaritalStatus** and **getPopulationAgeGroup** endpoints. If specified for other endpoints, the parameter will be dropped.
 
 If gender is not specified for endpoints with a gender parameter, records for total, male and female will be returned. The notable exception to this is for the "getEthnicGroup" endpoint, which only returns the total record if gender is not specified. This is because by default, this is the only API endpoint with a gender parameter that does not return gender breakdown by default.
 
-```{r, eval = NOT_CRAN}
-# example: endpoints with a gender parameter but gender is not specified
-get_pop_query(token, "getEthnicGroup", "Bedok", "2010") %>%
-  kable() %>% kable_styling()
-
-get_pop_query(token, "getMaritalStatus", "Bedok", "2010") %>%
-  kable() %>% kable_styling()
-```
-
-```{r, eval = NOT_CRAN}
-# example: endpoints with a gender parameter but gender specified
-get_pop_query(token, "getEconomicStatus", "Yishun", "2010", "female")
-```
-
-Finally, if an error occurs, the function will return `NULL` and a warning message.
-
-```{r, eval = NOT_CRAN}
-# example: returns NULL, warning message shows status code
-get_pop_query("invalid_token", "getOccupation", "Bedok", "2010")
-
-# example: returns NULL, warning message shows the error
-get_pop_query(token, "getInvalidData", "Bedok", "2010")
-get_pop_query(token, "getOccupation", "Bedok", "fakeyear")
-get_pop_query(token, "getReligion", "faketown", "2010")
-```
-
-### Multiple Queries
-The function `get_pop_queries()` allows users to query multiple datasets for multiple towns and years. It is similar to get_pop_query but allows for querying of multiple data types for multiple towns and years. Note that rate-limiting is essential for large queries.
-
-The function returns a tibble with each row representing a town in a particular year for a particular gender, and columns with the variables returned by the API endpoint. If any API call returns no data, the values will be NA but the row will be returned. However, if all data_types do return data for that town and year, no row will be returned for it.
+The function returns a tibble with each row representing a town in a particular year for a particular gender, and columns with the variables returned by the API endpoint. If any API call returns no data, the values will be NA but the row will be returned. However, if all data_types do not return data for that town and year, no row will be returned for it.
 
 ```{r, eval = NOT_CRAN}
 # example: returns output with no NA
@@ -186,7 +264,8 @@ get_pop_queries(token, c("getEconomicStatus", "getOccupation", "getLanguageLiter
   scroll_box(width = "100%")
 ```
 
-If all data_types do return data for that town and year, no row will be returned for it.
+If all data_types do return data for that town and year, no row will be returned for it. A warning message will show data_type/town/year/gender for which an error occurred.
+
 ```{r, eval = NOT_CRAN}
 # example: no records for 2012
 get_pop_queries(token, c("getEconomicStatus", "getOccupation"),
@@ -195,14 +274,7 @@ get_pop_queries(token, c("getEconomicStatus", "getOccupation"),
   scroll_box(width = "100%")
 ```
 
-Finally, to allow for faster computation, API calls can be called in parallel using `parallel = TRUE`. This is recommended for large requests, although it is noted that this API call tends to still be rather slow.
-
-```{r, eval = FALSE}
-# example: no records for 2012
-get_pop_queries(token, c("getEconomicStatus", "getOccupation"),
-                "Bedok", c("2010", "2012"),
-                parallel = TRUE)
-```
+Finally, to allow for faster computation, API calls can be called in parallel using `parallel = TRUE`. This is recommended for large requests.
 
 ## Route Service
 These functions are a wrapper for the [Route Service API](https://docs.onemap.sg/#route). The Route Service API provides users a way to query the route taken from one point to another. It provides information about the total time and distance taken for the route, route instructions and other infomation e.g. elevation, for a variety of routes (public transport, drive, walk, cycle). This package provides three different functions associated with this API, each serving different purposes. 
@@ -243,37 +315,12 @@ get_route(token, c(300, 300), c(400, 500), "cycle")
 get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "fly")
 ```
 
-### Total time and distance
-The function `get_summ_route()` accepts the same parameters as `get_route()`, but only returns total time and total (and start and end points, if requested). Recognising that this API is most valuable for calculating total time travelled (as a improved measure of spatial distance compared to Euclidean distance), this function produces a cleaner output containing only the main variables of interest.
-
-```{r, eval = NOT_CRAN}
-# example: drive/walk/cycle
-get_summ_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive") %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(width = "100%")
-```
-
-If route = "pt", only the best route is chosen (i.e. n_itineraries = 1).
-```{r, eval = NOT_CRAN}
-# example: pt
-get_summ_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "pt",
-               mode = "bus", max_dist = 300) %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(width = "100%")
-```
-
-If an error occurs, the output will be a tibble of NAs, along with a warning message
-```{r, eval = NOT_CRAN}
-# example: error, warning message shows status code
-get_summ_route("invalid_token", c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")
-
-# example: error, warning message shows error message from request
-get_summ_route(token, c(300, 300), c(400, 500), "cycle")
-get_summ_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "fly")
-```
-
 ### Total time and distance matrix
-The function `compare_routes()` allows the calculation of total time and distance for a tibble of start and end points. Users input a tibble of start and end points (and potentially other variables) and the function returns a tibble with additional columns, `total_time` and `total_dist`. The function also accepts multiple arguments for `route` and `pt_mode`, allowing users to compare various route options.
+The function `get_travel()` allows the calculation of total travel time and distance for a tibble of start and end points. Users input a tibble of start and end points (and potentially other variables) and the function returns the tibble with additional columns, `total_time` and `total_dist`. Recognising that this API is most valuable for calculating total time travelled (as a improved measure of spatial distance compared to Euclidean distance), this function produces a cleaner output containing only the main variables of interest.
+
+The function also accepts multiple arguments for `route` and `pt_mode`, allowing users to compare various route options.
+
+Note that if `as_wide = TRUE` is selected, any columns with identical names as the additional output columns will be overwritten.
 
 ```{r, eval = NOT_CRAN}
 # example: create sample df with start and end coordinates
@@ -286,7 +333,7 @@ sample <- data.frame(start_lat = c(1.3746617, 1.3567797, 1.3361976, 500),
 
 ```{r, eval = NOT_CRAN}
 # example: multiple routes
-compare_routes(token, sample[1:3, ],
+get_travel(token, sample[1:3, ],
     "start_lat", "start_lon", "end_lat", "end_lon",
     routes = c("cycle", "walk")) %>%
   kable() %>% kable_styling() %>%
@@ -295,7 +342,7 @@ compare_routes(token, sample[1:3, ],
 
 ```{r, eval = NOT_CRAN}
 # example: multiple routes + multiple pt modes 
-compare_routes(token, sample[1:3, ],
+get_travel(token, sample[1:3, ],
     "start_lat", "start_lon", "end_lat", "end_lon",
     routes = c("drive", "pt"), pt_mode = c("bus", "transit")) %>%
   kable() %>% kable_styling() %>%
@@ -306,26 +353,20 @@ By default, the data appears in a wide format, but users can specify for the out
 ```{r, eval = NOT_CRAN}
 # example: long format
 # no error, long format
-compare_routes(token, sample[1:3, ],
+get_travel(token, sample[1:3, ],
     "start_lat", "start_lon", "end_lat", "end_lon",
     routes = c("walk", "pt"), pt_mode = c("bus", "transit"),
     as_wide = FALSE) %>%
   kable() %>% kable_styling()
 ```
 
-If an error occurs, the output row will be have NAs for the additional variables, along with a warning message.
+If an error occurs, the output row will be have NAs for the additional variables, along with a warning message. The warning message will show start/end/route/pt_mode for which an error occurred.
 ```{r, eval = NOT_CRAN}
 # example: with error
-compare_routes(token, sample,
+get_travel(token, sample,
     "start_lat", "start_lon", "end_lat", "end_lon",
     routes = c("cycle", "walk")) %>%
   kable() %>% kable_styling()
 ```
 
 Lastly, it recommended for users working with large matrices to set `parallel = TRUE` for more efficient computation.
-```{r, eval = FALSE}
-compare_routes(token, sample[1:3, ],
-    "start_lat", "start_lon", "end_lat", "end_lon",
-    routes = c("cycle", "walk"),
-    parallel = TRUE)
-```
