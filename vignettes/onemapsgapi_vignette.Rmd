@@ -9,7 +9,6 @@ vignette: >
 
 ```{r, include = FALSE}
 library(knitr)
-library(kableExtra)
 opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -107,16 +106,12 @@ The function `get_theme()` returns data related to a particular theme, often loc
 
 ```{r, eval = NOT_CRAN}
 # return all hotel data
-get_theme(token, "hotels") %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(height = "300px", width = "100%")
+get_theme(token, "hotels")
 ```
 
 ```{r, eval = NOT_CRAN}
 # return all monuments data within a bounding area
-get_theme(token, "monuments", extents = "1.291789,%20103.7796402,1.3290461,%20103.8726032") %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(height = "300px", width = "100%")
+get_theme(token, "monuments", extents = "1.291789,%20103.7796402,1.3290461,%20103.8726032")
 ```
 
 ```{r, eval = NOT_CRAN}
@@ -133,9 +128,7 @@ get_theme("invalid_token", "hotels")
 get_theme(token, "non-existent-theme")
 
 # error: output is query_info, warning message query did not return any records
-get_theme(token, "ura_parking_lot", "1.291789,%20103.7796402,1.3290461,%20103.8726032") %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(width = "100%")
+get_theme(token, "ura_parking_lot", "1.291789,%20103.7796402,1.3290461,%20103.8726032")
 ```
 
 ## Planning Areas
@@ -236,14 +229,11 @@ The function returns a tibble with each row representing a town in a particular 
 ```{r, eval = NOT_CRAN}
 # example: returns output with no NA
 get_pop_queries(token, c("getOccupation", "getLanguageLiterate"), 
-                c("Bedok", "Yishun"), "2010") %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(width = "100%")
+                c("Bedok", "Yishun"), "2010")
 
 # example: returns output with no NA and gender field
 get_pop_queries(token, c("getEconomicStatus", "getEthnicGroup"), 
-                "Yishun", "2010", "female") %>%
-  kable() %>% kable_styling()
+                "Yishun", "2010", "female")
 ```
 
 If data types requested is a mix of those that accept gender parameters and does that do not, only `gender = "Total"` rows will have all records. The data types that does not accept gender params will be in `gender = Total`. 
@@ -251,17 +241,13 @@ If data types requested is a mix of those that accept gender parameters and does
 ```{r, eval = NOT_CRAN}
 # example: gender not specified
 get_pop_queries(token, c("getEconomicStatus", "getOccupation", "getLanguageLiterate"),
-                "Bedok", "2010") %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(width = "100%")
+                "Bedok", "2010")
 ```
 
 ```{r, eval = NOT_CRAN}
 # example: gender specified
 get_pop_queries(token, c("getEconomicStatus", "getOccupation", "getLanguageLiterate"),
-                "Bedok", "2010", gender = "female") %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(width = "100%")
+                "Bedok", "2010", gender = "female")
 ```
 
 If all data_types do return data for that town and year, no row will be returned for it. A warning message will show data_type/town/year/gender for which an error occurred.
@@ -269,9 +255,7 @@ If all data_types do return data for that town and year, no row will be returned
 ```{r, eval = NOT_CRAN}
 # example: no records for 2012
 get_pop_queries(token, c("getEconomicStatus", "getOccupation"),
-                "Bedok", c("2010", "2012")) %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(width = "100%")
+                "Bedok", c("2010", "2012"))
 ```
 
 Finally, to allow for faster computation, API calls can be called in parallel using `parallel = TRUE`. This is recommended for large requests.
@@ -286,17 +270,13 @@ It returns the full route data in a tibble format, or a list containing a tibble
 
 ```{r, eval = NOT_CRAN}
 # example: only route data, route = drive
-get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive") %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(width = "100%")
+get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")
 ```
 
 ```{r, eval = NOT_CRAN}
 # example: only route data, route = pt
 get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "pt",
-          mode = "bus", max_dist = 300) %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(width = "100%")
+          mode = "bus", max_dist = 300)
 ```
 
 ```{r, eval = NOT_CRAN}
@@ -335,18 +315,14 @@ sample <- data.frame(start_lat = c(1.3746617, 1.3567797, 1.3361976, 500),
 # example: multiple routes
 get_travel(token, sample[1:3, ],
     "start_lat", "start_lon", "end_lat", "end_lon",
-    routes = c("cycle", "walk")) %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(width = "100%")
+    routes = c("cycle", "walk"))
 ```
 
 ```{r, eval = NOT_CRAN}
 # example: multiple routes + multiple pt modes 
 get_travel(token, sample[1:3, ],
     "start_lat", "start_lon", "end_lat", "end_lon",
-    routes = c("drive", "pt"), pt_mode = c("bus", "transit")) %>%
-  kable() %>% kable_styling() %>%
-  scroll_box(width = "100%")
+    routes = c("drive", "pt"), pt_mode = c("bus", "transit"))
 ```
 
 By default, the data appears in a wide format, but users can specify for the output to be in long format.
@@ -356,8 +332,7 @@ By default, the data appears in a wide format, but users can specify for the out
 get_travel(token, sample[1:3, ],
     "start_lat", "start_lon", "end_lat", "end_lon",
     routes = c("walk", "pt"), pt_mode = c("bus", "transit"),
-    as_wide = FALSE) %>%
-  kable() %>% kable_styling()
+    as_wide = FALSE)
 ```
 
 If an error occurs, the output row will be have NAs for the additional variables, along with a warning message. The warning message will show start/end/route/pt_mode for which an error occurred.
@@ -365,8 +340,7 @@ If an error occurs, the output row will be have NAs for the additional variables
 # example: with error
 get_travel(token, sample,
     "start_lat", "start_lon", "end_lat", "end_lon",
-    routes = c("cycle", "walk")) %>%
-  kable() %>% kable_styling()
+    routes = c("cycle", "walk"))
 ```
 
 Lastly, it recommended for users working with large matrices to set `parallel = TRUE` for more efficient computation.
