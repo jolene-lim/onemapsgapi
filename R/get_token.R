@@ -14,7 +14,7 @@
 #' @export
 #'
 #' @examples
-#' \donttest{get_token("user@@example.com",  "password")}
+#' \dontrun{get_token("user@@example.com",  "password")}
 
 get_token <- function(email, password, hide_message = FALSE) {
   # query API

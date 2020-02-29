@@ -29,12 +29,12 @@ This function is a wrapper for the \href{https://docs.onemap.sg/#check-theme-sta
 }
 \examples{
 # returns named logical
-\donttest{get_theme_status(token, "kindergartens")}
-\donttest{get_theme_status(token, "2020-01-01", "12:00:00", "hotels")}
+\dontrun{get_theme_status(token, "kindergartens")}
+\dontrun{get_theme_status(token, "2020-01-01", "12:00:00", "hotels")}
 
 # returns NULL, warning message shows status code
-\donttest{get_theme_status("invalid_token", "blood_bank")}
+\dontrun{get_theme_status("invalid_token", "blood_bank")}
 
 # returns NULL, warning message shows error
-\donttest{get_theme_status(token, "invalid_theme")}
+\dontrun{get_theme_status(token, "invalid_theme")}
 }

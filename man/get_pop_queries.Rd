@@ -35,19 +35,21 @@ This function is a wrapper for the \href{https://docs.onemap.sg/#population-quer
 }
 \examples{
 # output with no NA
-\donttest{get_pop_queries(token, c("getOccupation", "getLanguageLiterate"), c("Bedok", "Yishun"), "2010")}
-\donttest{get_pop_queries(token, c("getEconomicStatus", "getEthnicGroup"), "Yishun", "2010", "female")}
+\dontrun{get_pop_queries(token, c("getOccupation", "getLanguageLiterate"),
+    c("Bedok", "Yishun"), "2010")}
+\dontrun{get_pop_queries(token, c("getEconomicStatus", "getEthnicGroup"),
+    "Yishun", "2010", "female")}
 
 ## note behaviour if data types is a mix of those that accept gender params
 ### only total will have all records
-\donttest{get_pop_queries(token, c("getEconomicStatus", "getOccupation", "getLanguageLiterate"),
+\dontrun{get_pop_queries(token, c("getEconomicStatus", "getOccupation", "getLanguageLiterate"),
     "Bedok", "2010")}
 ### data type that does not accept gender params will be in gender = Total
-\donttest{get_pop_queries(token, c("getEconomicStatus", "getOccupation", "getLanguageLiterate"),
+\dontrun{get_pop_queries(token, c("getEconomicStatus", "getOccupation", "getLanguageLiterate"),
     "Bedok", "2010", gender = "female")}
 
 # output with some town-year queries without record due to no data
 # warning message will show data_type/town/year/gender for which an error occurred
-\donttest{get_pop_queries(token, c("getEconomicStatus", "getOccupation"),
+\dontrun{get_pop_queries(token, c("getEconomicStatus", "getOccupation"),
     "Bedok", c("2010", "2012"))} # no records for 2012
 }

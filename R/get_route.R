@@ -25,19 +25,20 @@
 #'
 #' @examples
 #' # returns output tibble
-#' \donttest{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")}
-#' \donttest{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "pt",
+#' \dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")}
+#' \dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "pt",
 #'     mode = "bus", max_dist = 300, n_itineraries = 2)}
 #'
 #' # returns list of status list and output tibble
-#' \donttest{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive", status_info = TRUE)}
+#' \dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581),
+#'     "drive", status_info = TRUE)}
 #'
 #' # error: output is NULL, warning message shows status code
-#' \donttest{get_route("invalid_token", c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")}
+#' \dontrun{get_route("invalid_token", c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")}
 #'
 #' # error: output is NULL, warning message shows error message from request
-#' \donttest{get_route(token, c(300, 300), c(400, 500), "cycle")}
-#' \donttest{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "fly")}
+#' \dontrun{get_route(token, c(300, 300), c(400, 500), "cycle")}
+#' \dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "fly")}
 
 get_route <- function(token, start, end, route, date = Sys.Date(), time = format(Sys.time(), format = "%T"), mode = NULL, max_dist = NULL, n_itineraries = 3, status_info = FALSE) {
   # query API

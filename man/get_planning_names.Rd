@@ -23,9 +23,9 @@ This function is a wrapper for the \href{https://docs.onemap.sg/#names-of-planni
 }
 \examples{
 # returns tibble
-\donttest{get_planning_names(token)}
-\donttest{get_planning_names(token, 2008)}
+\dontrun{get_planning_names(token)}
+\dontrun{get_planning_names(token, 2008)}
 
 # error: output is NULL, warning message shows status code
-\donttest{get_planning_names("invalid_token")}
+\dontrun{get_planning_names("invalid_token")}
 }

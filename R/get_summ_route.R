@@ -19,19 +19,6 @@
 #' }
 #'
 #' If an error occurs, the output will be \code{NA}, along with a warning message.
-#'
-#' @examples
-#' # returns output tibble
-#' \donttest{get_summ_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")}
-#' \donttest{get_summ_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "pt",
-#'     mode = "bus", max_dist = 300)}
-#'
-#' # error: output is NA, warning message shows status code
-#' \donttest{get_summ_route("invalid_token", c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")}
-#'
-#' # error: output is NA, warning message shows error message from request
-#' \donttest{get_summ_route(token, c(300, 300), c(400, 500), "cycle")}
-#' \donttest{get_summ_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "fly")}
 
 get_summ_route <- function(token, start, end, route, date = Sys.Date(), time = format(Sys.time(), format = "%T"), mode = NULL, max_dist = NULL) {
   # query API

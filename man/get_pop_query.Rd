@@ -25,18 +25,3 @@ If an error occurs, the function will return a NULL value
 \description{
 This function is a wrapper for the \href{https://docs.onemap.sg/#population-query}{Population Query API}. It only allows for querying of one data type (i.e. one of the API endpoints) for a particular town and year.
 }
-\examples{
-# returns data
-\donttest{get_pop_query(token, "getOccupation", "Bedok", "2010")}
-\donttest{get_pop_query(token, "getEthnicStatus", "Central", "2010")}
-\donttest{get_pop_query(token, "getMaritalStatus", "Central", "2010")}
-\donttest{get_pop_query(token, "getEconomicStatus", "Yishun", "2010", "female")}
-
-# returns NULL, warning message shows status code
-\donttest{get_pop_query("invalid_token", "getOccupation", "Bedok", "2010")}
-
-# returns NULL, warning message shows the error
-\donttest{get_pop_query(token, "getInvalidData", "Bedok", "2010")}
-\donttest{get_pop_query(token, "getOccupation", "Bedok", "fakeyear")}
-\donttest{get_pop_query(token, "getReligion", "faketown", "2010")}
-}

@@ -36,22 +36,22 @@
 #'     add_info = c("a", "b", "c", "d"))
 #'
 #' # no error, wide format
-#' \donttest{get_travel(token, sample[1:3, ],
+#' \dontrun{get_travel(token, sample[1:3, ],
 #'     "start_lat", "start_lon", "end_lat", "end_lon",
 #'     routes = c("cycle", "walk"))}
-#' \donttest{get_travel(token, sample[1:3, ],
+#' \dontrun{get_travel(token, sample[1:3, ],
 #'     "start_lat", "start_lon", "end_lat", "end_lon",
 #'     routes = c("drive", "pt"), pt_mode = c("bus", "transit"))}
 #'
 #' # no error, long format
-#' \donttest{get_travel(token, sample[1:3, ],
+#' \dontrun{get_travel(token, sample[1:3, ],
 #'     "start_lat", "start_lon", "end_lat", "end_lon",
 #'     routes = c("walk", "pt"), pt_mode = c("bus", "transit"),
 #'     as_wide = FALSE)}
 #'
 #' # with error
 #' # warning message will show start/end/route/pt_mode for which an error occurred
-#' \donttest{get_travel(token, sample,
+#' \dontrun{get_travel(token, sample,
 #'     "start_lat", "start_lon", "end_lat", "end_lon",
 #'     routes = c("cycle", "walk"))}
 

@@ -30,10 +30,10 @@ This function is a wrapper for the \href{https://docs.onemap.sg/#get-all-themes-
 }
 \examples{
 # valid
-\donttest{search_themes(token)}
-\donttest{search_themes(token, "hdb", "parks")}
-\donttest{search_themes(token, more_info = FALSE)}
+\dontrun{search_themes(token)}
+\dontrun{search_themes(token, "hdb", "parks")}
+\dontrun{search_themes(token, more_info = FALSE)}
 
 # error
-\donttest{search_themes("my_invalid_token")}
+\dontrun{search_themes("my_invalid_token")}
 }

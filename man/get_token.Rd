@@ -21,5 +21,5 @@ This function is a wrapper for the \href{https://docs.onemap.sg/#authentication-
 Using the API requires that users have a registered email address with Onemap.Sg. Users can register themselves using \href{https://developers.onemap.sg/signup/}{OneMap.Sg's form}.
 }
 \examples{
-\donttest{get_token("user@example.com",  "password")}
+\dontrun{get_token("user@example.com",  "password")}
 }

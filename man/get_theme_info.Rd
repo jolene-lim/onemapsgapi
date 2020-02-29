@@ -20,11 +20,11 @@ This function is a wrapper for the \href{https://docs.onemap.sg/#get-theme-info}
 }
 \examples{
 # returns named character vector
-\donttest{get_theme_status(token, "kindergartens")}
+\dontrun{get_theme_status(token, "kindergartens")}
 
 # returns NULL, warning message shows status code
-\donttest{get_theme_status("invalid_token", "blood_bank")}
+\dontrun{get_theme_status("invalid_token", "blood_bank")}
 
 # returns NULL, warning message shows error
-\donttest{get_theme_status(token, "invalid_theme")}
+\dontrun{get_theme_status(token, "invalid_theme")}
 }

@@ -30,18 +30,19 @@ This function is a wrapper for the \href{https://docs.onemap.sg/#retrieve-theme}
 }
 \examples{
 # returns a tibble of output
-\donttest{get_theme(token, "hotels")}
-\donttest{get_theme(token, "monuments", extents = "1.291789,\%20103.7796402,1.3290461,\%20103.8726032")}
+\dontrun{get_theme(token, "hotels")}
+\dontrun{get_theme(token, "monuments",
+    extents = "1.291789,\%20103.7796402,1.3290461,\%20103.8726032")}
 
 # returns a list of status tibble and output tibble
-\donttest{get_theme(token, "lighting", return_info = TRUE)}
+\dontrun{get_theme(token, "lighting", return_info = TRUE)}
 
 # error: output is NULL, warning message shows status code
-\donttest{get_theme("invalid_token", "hotels")}
+\dontrun{get_theme("invalid_token", "hotels")}
 
 # error: output is NULL, warning message shows error message from request
-\donttest{get_theme(token, "non-existent-theme")}
+\dontrun{get_theme(token, "non-existent-theme")}
 
 # error: output is \code{query_info}, warning message query did not return any records
-\donttest{get_theme(token, "ura_parking_lot", "1.291789,\%20103.7796402,1.3290461,\%20103.8726032")}
+\dontrun{get_theme(token, "ura_parking_lot", "1.291789,\%20103.7796402,1.3290461,\%20103.8726032")}
 }

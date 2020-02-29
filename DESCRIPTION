@@ -1,13 +1,16 @@
 Package: onemapsgapi
 Type: Package
-Title: R Wrapper for OneMap.Sg's API
+Title: R Wrapper for the 'OneMap.Sg API'
 Version: 1.0.0
-Author: person("Jolene", "Lim", email = "jyl2187@columbia.edu",
+Authors@R: person("Jolene", "Lim", email = "jyl2187@columbia.edu",
       role = c("aut", "cre"))
 Maintainer: Jolene Lim <jyl2187@columbia.edu>
-Description: This package provides a suite of functions for users to easily query results from 
-    the OneMap.Sg API. A function is available for every query possible in the OneMap.Sg API. 
-    Using Singapore's spatial data has never been easieR!
+Description: An R wrapper for the 'OneMap.Sg' API <https://docs.onemap.sg/>. 
+    Functions help users query data from the API and return raw JSON data
+    in "tidy" formats. Support is also available for users to retrieve data from multiple API calls 
+    and integrate results into single dataframes, without
+    needing to clean and merge the data themselves. This package is best suited for users who would 
+    like to perform analyses with Singapore's spatial data without having to perform excessive data cleaning.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -11,21 +11,6 @@
 #' @return A tibble with 1 row and values for all the corresponding variables returned by the API endpoint.
 #' If gender is not specified for endpoints with a gender parameter, records for total, male and female will be returned. The notable exception to this is for the \code{"getEthnicGroup"} endpoint, which only returns the total record if gender is not specified. This is because by default, this is the only API endpoint with a gender parameter that does not return gender breakdown by default.
 #' If an error occurs, the function will return a NULL value
-#'
-#' @examples
-#' # returns data
-#' \donttest{get_pop_query(token, "getOccupation", "Bedok", "2010")}
-#' \donttest{get_pop_query(token, "getEthnicStatus", "Central", "2010")}
-#' \donttest{get_pop_query(token, "getMaritalStatus", "Central", "2010")}
-#' \donttest{get_pop_query(token, "getEconomicStatus", "Yishun", "2010", "female")}
-#'
-#' # returns NULL, warning message shows status code
-#' \donttest{get_pop_query("invalid_token", "getOccupation", "Bedok", "2010")}
-#'
-#' # returns NULL, warning message shows the error
-#' \donttest{get_pop_query(token, "getInvalidData", "Bedok", "2010")}
-#' \donttest{get_pop_query(token, "getOccupation", "Bedok", "fakeyear")}
-#' \donttest{get_pop_query(token, "getReligion", "faketown", "2010")}
 
 
 get_pop_query <- function(token, data_type, planning_area, year, gender = NULL) {

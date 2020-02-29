@@ -1,5 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^readme.md
+^cran-comments.md
 ^doc$
 ^Meta$

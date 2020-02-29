@@ -45,16 +45,3 @@ If an error occurs, the output will be \code{NA}, along with a warning message.
 This function is a wrapper for the \href{https://docs.onemap.sg/#route}{Route Service API}. It is similar to \code{\link{get_route}}, except it returns a tibble with only total time and total distance, and also optionally, the start coordinates and end coordinates.
 If \code{route = "pt"}, only the best route is chosen (i.e. \code{n_itineraries = 1}).
 }
-\examples{
-# returns output tibble
-\donttest{get_summ_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")}
-\donttest{get_summ_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "pt",
-    mode = "bus", max_dist = 300)}
-
-# error: output is NA, warning message shows status code
-\donttest{get_summ_route("invalid_token", c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")}
-
-# error: output is NA, warning message shows error message from request
-\donttest{get_summ_route(token, c(300, 300), c(400, 500), "cycle")}
-\donttest{get_summ_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "fly")}
-}

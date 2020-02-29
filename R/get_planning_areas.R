@@ -21,17 +21,17 @@
 #'
 #' @examples
 #' # returns raw JSON object
-#' \donttest{get_planning_areas(token)}
-#' \donttest{get_planning_areas(token, 2008)}
+#' \dontrun{get_planning_areas(token)}
+#' \dontrun{get_planning_areas(token, 2008)}
 #'
 #' # returns dataframe of class "sf"
-#' \donttest{get_planning_areas(token, read = "sf")}
+#' \dontrun{get_planning_areas(token, read = "sf")}
 #'
 #' # returns SpatialPolygonsDataFrame ("sp" object)
-#' \donttest{get_planning_areas(token, read = "rgdal")}
+#' \dontrun{get_planning_areas(token, read = "rgdal")}
 #'
 #' # error: output is NULL, warning message shows status code
-#' \donttest{get_planning_areas("invalid_token")}
+#' \dontrun{get_planning_areas("invalid_token")}
 
 
 get_planning_areas <- function(token, year = NULL, read = NULL) {
