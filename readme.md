@@ -7,8 +7,8 @@
 ### Introduction
 The OneMapSGAPI package provides useful wrappers for the [OneMapSG API](https://docs.onemap.sg/#introduction) client. It allows users to easily query spatial data from the API in a tidy format and provides additional functionalities to allow easy data manipulation. 
 
-The OneMapSg API package is now **available on CRAN-R**!
-To download the package, run the code:
+The OneMapSg API package is now **available on CRAN-R**! :tada: :confetti_ball:
+To download the release version, run:
 ```{r}
 install.packages("onemapsgapi")
 ```
@@ -21,20 +21,21 @@ devtools::install_github("jolene-lim/onemapsgapi")
 The development version is recommended as this package is early in its lifecycle. Please submit any problems via a github issues. Pull requests are also encouraged for anyone looking to contribute!
 
 ### Features
-* Returns easy-to-use formats: Although the default output of the API call is a JSON object, the package functions return dataframes, the most common data structures R users work with (while allowing users the option to simply get raw JSONs).  
-* User friendliness through built-in regex: Some API calls return a lot of data, which may not be relevant to the user. Where appropriate, the functions allow users to input search terms and internally uses regular expressions to filter relevant records.  
 * Built-in data wrangling: Where output may be useful in either long or wide formats, depending on user objective, functions provide parameters for users to indicate if the output should be long or wide. All necessary data wrangling will be done within the function.  
 * Built-in spatial data wrangling: API calls return spatial data as string vectors of geojson objects. This package allows users the option to return outputs compatible the with `sf` and `sp` packages.
 * Parallel computing functionality: Some functions handle iterative API calls. In cases where there will be a large number of calls are needed to be made, functions will allow a parallel computing option to speed up the return of an output.  
+* User friendliness through built-in regex: Some API calls return a lot of data, which may not be relevant to the user. Where appropriate, the functions allow users to input search terms and internally uses regular expressions to filter relevant records.  
 
 ### Status
 Currently, the following API endpoints are supported:
 
-- **POST** (`post`): FULL COVERAGE; [getToken](https://docs.onemap.sg/#authentication-service-post)  
-- **Themes** (`themesvc`): FULL COVERAGE; [checkThemeStatus](https://docs.onemap.sg/#check-theme-status), [getThemeInfo](https://docs.onemap.sg/#get-theme-info), [getAllThemesInfo](https://docs.onemap.sg/#get-all-themes-info), [retrieveTheme](https://docs.onemap.sg/#retrieve-theme)  
-- **Planning Area** (`popapi`): FULL COVERAGE; [getAllPlanningarea](https://docs.onemap.sg/#planning-area-polygons), [getPlanningareaNames](https://docs.onemap.sg/#names-of-planning-area), [getPlanningarea](https://docs.onemap.sg/#planning-area-query)  
-- **Population Query** (`popapi`): FULL COVERAGE; [getEconomicStatus](https://docs.onemap.sg/#economic-status-data), [getEducationAttending](https://docs.onemap.sg/#education-status-data), [getEthnicGroup](https://docs.onemap.sg/#ethnic-distribution-data), [getHouseholdMonthlyIncomeWork](https://docs.onemap.sg/#work-income-for-household-monthly), [getHouseholdSize](https://docs.onemap.sg/#household-size-data), [getHouseholdStructure](https://docs.onemap.sg/#household-structure-data), [getIncomeFromWork](https://docs.onemap.sg/#income-from-work-data), [getIndustry](https://docs.onemap.sg/#industry-of-population-data), [getLanguageLiterate](https://docs.onemap.sg/#language-literacy-data), [getMaritalStatus](https://docs.onemap.sg/#marital-status-data), [getModeOfTransportSchool](https://docs.onemap.sg/#mode-of-transports-to-school-data), [getModeOfTransportWork](https://docs.onemap.sg/#mode-of-transport-to-work-data), [getOccupation](https://docs.onemap.sg/#occupation-data), [getPopulationAgeGroup](https://docs.onemap.sg/#age-data), [getReligion](https://docs.onemap.sg/#religion-data), [getSpokenAtHome](https://docs.onemap.sg/#spoken-language-data), [getTenancy](https://docs.onemap.sg/#tenancy-data), [getTypeOfDwellingHousehold](https://docs.onemap.sg/#tenancy-data), [getTypeOfDwellingPop](https://docs.onemap.sg/#dwelling-type-population-data)  
-- **Routing Service** (`routingsvc`): FULL COVERAGE (R); [route](https://docs.onemap.sg/#route). [Route Decoder](https://docs.onemap.sg/#routing-service) not supported in R.
+| API | Coverage | Supported Endpoints |
+| --- | --- | --- |
+| **Post** | :white_check_mark: Full | [getToken](https://docs.onemap.sg/#authentication-service-post) |
+| **Themes** | :white_check_mark: Full | [checkThemeStatus](https://docs.onemap.sg/#check-theme-status), [getThemeInfo](https://docs.onemap.sg/#get-theme-info), [getAllThemesInfo](https://docs.onemap.sg/#get-all-themes-info), [retrieveTheme](https://docs.onemap.sg/#retrieve-theme)
+| **Planning Area** | :white_check_mark: Full | [getAllPlanningarea](https://docs.onemap.sg/#planning-area-polygons), [getPlanningareaNames](https://docs.onemap.sg/#names-of-planning-area), [getPlanningarea](https://docs.onemap.sg/#planning-area-query)
+| **Population Query** | :white_check_mark: Full | [getEconomicStatus](https://docs.onemap.sg/#economic-status-data), [getEducationAttending](https://docs.onemap.sg/#education-status-data), [getEthnicGroup](https://docs.onemap.sg/#ethnic-distribution-data), [getHouseholdMonthlyIncomeWork](https://docs.onemap.sg/#work-income-for-household-monthly), [getHouseholdSize](https://docs.onemap.sg/#household-size-data), [getHouseholdStructure](https://docs.onemap.sg/#household-structure-data), [getIncomeFromWork](https://docs.onemap.sg/#income-from-work-data), [getIndustry](https://docs.onemap.sg/#industry-of-population-data), [getLanguageLiterate](https://docs.onemap.sg/#language-literacy-data), [getMaritalStatus](https://docs.onemap.sg/#marital-status-data), [getModeOfTransportSchool](https://docs.onemap.sg/#mode-of-transports-to-school-data), [getModeOfTransportWork](https://docs.onemap.sg/#mode-of-transport-to-work-data), [getOccupation](https://docs.onemap.sg/#occupation-data), [getPopulationAgeGroup](https://docs.onemap.sg/#age-data), [getReligion](https://docs.onemap.sg/#religion-data), [getSpokenAtHome](https://docs.onemap.sg/#spoken-language-data), [getTenancy](https://docs.onemap.sg/#tenancy-data), [getTypeOfDwellingHousehold](https://docs.onemap.sg/#tenancy-data), [getTypeOfDwellingPop](https://docs.onemap.sg/#dwelling-type-population-data)
+| **Routing Service** | :white_check_mark: Full | [route](https://docs.onemap.sg/#route)<br> **Note**: [Route Decoder](https://docs.onemap.sg/#routing-service) not supported in R
 
 ## Usage
 ### Authentication
