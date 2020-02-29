@@ -1,14 +1,25 @@
 # OneMapSGAPI
 
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/jolene-lim/onemapsgapi/graphs/commit-activity) [![CRAN version](https://www.r-pkg.org/badges/version/onemapsgapi)](https://www.r-pkg.org/badges/version/onemapsgapi)
+![!Downloads](https://cranlogs.r-pkg.org/badges/grand-total/onemapsgapi)
+
 ## Getting Started
 ### Introduction
 The OneMapSGAPI package provides useful wrappers for the [OneMapSG API](https://docs.onemap.sg/#introduction) client. It allows users to easily query spatial data from the API in a tidy format and provides additional functionalities to allow easy data manipulation. 
 
+The OneMapSg API package is now **available on CRAN-R**!
 To download the package, run the code:
+```{r}
+install.packages("onemapsgapi")
+```
+
+The development version can be downloaded via:
 ```{r}
 # install.packages("devtools")
 devtools::install_github("jolene-lim/onemapsgapi")
 ```
+The development version is recommended as this package is early in its lifecycle. Please submit any problems via a github issues. Pull requests are also encouraged for anyone looking to contribute!
+
 ### Features
 * Returns easy-to-use formats: Although the default output of the API call is a JSON object, the package functions return dataframes, the most common data structures R users work with (while allowing users the option to simply get raw JSONs).  
 * User friendliness through built-in regex: Some API calls return a lot of data, which may not be relevant to the user. Where appropriate, the functions allow users to input search terms and internally uses regular expressions to filter relevant records.  
