@@ -13,9 +13,8 @@
 #' If an error occurs, the function returns NULL and a warning message is printed.
 #'
 #' @note
-#' The \code{read = "rgdal"} option will take a longer time to return an output than the \code{read = "sf"} option. \cr \cr
 #' If \code{read} is specified, any missing geojson objects will be dropped (this affects the "Others" planning area returned by the API). The returned outputs are NOT projected. \cr \cr
-#' If the user specifies a \code{read} method but does not have the corresponding package installed, the function will return the raw JSON and print a warning message.
+#' If the user specifies \code{read = "sp"}  but does not have the \code{sp} package installed, the function will return the raw JSON and print a warning message.
 #'
 #' @export
 #'
@@ -74,21 +73,17 @@ get_planning_areas <- function(token, year = NULL, read = NULL) {
 
   }
 
-  if (read == "sf" & requireNamespace("sf", quietly = TRUE)) {
-
+  if (read %in% c("sf", "rgdal") & requireNamespace("sf", quietly = TRUE)) {
     output <- output %>%
       map(function(x) sf::st_sf(name = x$pln_area_n, geometry = flatten(sf::st_read(x$geojson, quiet = TRUE)))) %>%
       reduce(rbind)
 
-  } else if (read == "rgdal" & requireNamespace("rgdal", quietly = TRUE)) {
-
-    output <- output %>%
-      map(function(x) sp::merge(rgdal::readOGR(x$geojson, verbose = FALSE), tibble(name = x$pln_area_n))) %>%
-      reduce(rbind)
+    if (read == "rdgal") {
+      output <- as(output, "Spatial")
+    }
 
   } else {
-    warning(paste0("Failed to read geojson. Please ensure you have package ", read, " installed.
-                   Only packages sf and rgdal (for sp) are supported currently."))
+    warning(paste0("Failed to read geojson. Please ensure you have package ", read, " installed."))
   }
 
   return(output)
