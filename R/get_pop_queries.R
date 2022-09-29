@@ -72,6 +72,9 @@ get_pop_queries <- function(token, data_types, planning_areas, years, gender = N
     output <- NULL
     warning("Your request produced 0 outputs! Please check your query and refer to documentation for valid parameters.")
 
+#  } else if (!is.null(gender)) {
+#    output <- output_list %>%
+#      reduce(full_join, by = c("planning_area", "year", "gender"))
   } else {
     output <- output_list %>%
       reduce(full_join, by = c("planning_area", "year", "gender"))

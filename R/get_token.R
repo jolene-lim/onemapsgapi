@@ -1,6 +1,3 @@
-## THINGS TO FIX:
-## fix message
-
 #' Extract API token from OneMap.Sg
 #'
 #' @description
@@ -20,7 +17,7 @@ get_token <- function(email, password, hide_message = FALSE) {
   # query API
   url <- "https://developers.onemap.sg/privateapi/auth/post/getToken"
   details <- list(email = email, password = password)
-  response <- POST(url, body = details)
+  response <- POST(url, body = details, encode = "json")
 
   # error handling
   if (http_error(response)) {

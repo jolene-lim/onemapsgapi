@@ -7,11 +7,25 @@
 #' @param data_type Type of data to be retrieved, should correspond to one of the API endpoints. E.g. to get economic status data, \code{data_type = "getEconomicStatus"}. The API endpoints can be found on the documentation page.
 #' @param planning_area Town for which the data should be retrieved.
 #' @param year Year for which the data should be retrieved.
-#' @param gender Optional, if specified only records for that gender will be returned. This parameter is only valid for the \code{"getEconomicStatus"}, \code{"getEthnicGroup"}, \code{"getMaritalStatus"} and \code{"getPopulationAgeGroup"} endpoints. If specified for other endpoints, the parameter will be dropped.
+#' @param gender Optional, valid values include \code{male} and \code{female}. If specified, only records for that gender will be returned. This parameter is only valid for the \code{"getEconomicStatus"}, \code{"getEthnicGroup"}, \code{"getMaritalStatus"} and \code{"getPopulationAgeGroup"} endpoints. If specified for other endpoints, the parameter will be dropped. If gender is not specified for valid endpoints, records for total, male and female will be returned.
 #' @return A tibble with 1 row and values for all the corresponding variables returned by the API endpoint.
-#' If gender is not specified for endpoints with a gender parameter, records for total, male and female will be returned. The notable exception to this is for the \code{"getEthnicGroup"} endpoint, which only returns the total record if gender is not specified. This is because by default, this is the only API endpoint with a gender parameter that does not return gender breakdown by default.
 #' If an error occurs, the function will return a NULL value
-
+#'
+#' @export
+#'
+#' @examples
+#' # output with no NA
+#' \dontrun{get_pop_query(token, "getOccupation", "Yishun", "2010")}
+#' \dontrun{get_pop_query(token, "getModeOfTransportSchool", "Bishan", "2015", "female")}
+#'
+#' # note behaviour with gender parameter not specified
+#' \dontrun{get_pop_query(token, "getMaritalStatus", "Bedok", "2010")}
+#' \dontrun{get_pop_query(token, "getEthnicGroup", "Bedok", "2010")}
+#' \dontrun{get_pop_query(token, "getPopulationAgeGroup", "Bedok", "2010")}
+#'
+#' # output due to error
+#' \dontrun{get_pop_query(token, "getSpokenAtHome", "Bedok", "2043")}
+#'
 
 get_pop_query <- function(token, data_type, planning_area, year, gender = NULL) {
 
@@ -36,7 +50,6 @@ get_pop_query <- function(token, data_type, planning_area, year, gender = NULL) 
 
   } else {
     output <- content(response)
-
     # error check: invalid parameters
     if ("error" %in% names(output)) {
       warning("The request (", data_type , "/", planning_area, "/", year, "/", gender, ") ",
@@ -66,30 +79,37 @@ get_pop_query <- function(token, data_type, planning_area, year, gender = NULL) 
       # bind rows and turn into tibble
         reduce(bind_rows) %>% as_tibble()
 
-      # attach gender = Total for output without gender,
-      # and ensure if gender is not specified, Total data is returned - i.e. fix Economic Status and Marital Status
-      if (data_type %in% c("getEconomicStatus", "getMaritalStatus")) {
-        if (is.null(gender)) {
-          output <- output %>%
-            select(planning_area, year, gender, everything())
-          total <- colSums(output[ , -(1:3)], na.rm = FALSE) %>%
-            t() %>% as_tibble() %>%
-            mutate(planning_area = str_to_title(planning_area),
-                   year = as.integer(year),
-                   gender = "Total") %>%
-            select(planning_area, year, gender, everything())
+      # endpoints which allow gender parameter have different return behaviour when gender=NULL
+      # getPopulationAgeGroup returns total, male & female
+      # getEconomicStatus and getMaritalStatus returns only male & female
+      # getEthnicGroup only returns total and does not include the gender parameter
+      # this code block standardises output to include total, male & female
 
-          output <- output %>%
-            bind_rows(total)
-        }
+      if (is.null(gender) & data_type %in% c("getEconomicStatus", "getMaritalStatus")) {
+        output <- output %>%
+          select(planning_area, year, gender, everything())
+        total <- colSums(output[ , -(1:3)], na.rm = FALSE) %>%
+          t() %>% as_tibble() %>%
+          mutate(planning_area = str_to_title(planning_area),
+                 year = as.integer(year),
+                 gender = "Total") %>%
+          select(planning_area, year, gender, everything())
 
-      } else if (!(data_type %in% c("getEthnicGroup", "getPopulationAgeGroup") & !is.null(gender))) {
-        output <- output %>% mutate(gender = "Total")
+        output <- output %>%
+          bind_rows(total)
+
+      } else if (data_type == "getEthnicGroup" & is.null(gender)) {
+          output <- output %>%
+            mutate(gender = "Total") %>%
+            bind_rows(get_pop_query(token, data_type, planning_area, year, gender = "male")) %>%
+            bind_rows(get_pop_query(token, data_type, planning_area, year, gender = "female"))
+      } else if (! data_type %in% c("getEconomicStatus", "getEconomicStatus", "getEthnicGroup", "getPopulationAgeGroup")) {
+          output <- output %>%
+            mutate(gender = "Total")
       }
-    }
-
   }
 
   output
 
+  }
 }
