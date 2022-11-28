@@ -4,7 +4,7 @@
 \alias{get_planning_polygon}
 \title{Get Planning Polygon for a Specific Point}
 \usage{
-get_planning_polygon(token, lat, lon, year = NULL, read = NULL)
+get_planning_polygon(token, lat, lon, year = NULL, read = "tibble")
 }
 \arguments{
 \item{token}{User's API token. This can be retrieved using \code{\link{get_token}}}
@@ -15,7 +15,7 @@ get_planning_polygon(token, lat, lon, year = NULL, read = NULL)
 
 \item{year}{Optional, check \href{https://docs.onemap.sg/#planning-area-query}{documentation} for valid options. Invalid requests will are ignored by the API.}
 
-\item{read}{Optional, which package to use to read geojson object. For "sf" objects, specify \code{read = "sf"} and for "sp" objects use \code{read = "rgdal"}.}
+\item{read}{Optional, defaults to \code{tibble}. Package to use to read geojson object. For "sf" objects, specify \code{read = "sf"} and for "sp" objects use \code{read = "rgdal"}.}
 }
 \value{
 If the parameter \code{read} is not specified, the function returns a raw JSON object a list containing the planning area name and a geojson string representing the polygon. \cr \cr
@@ -31,14 +31,14 @@ If the user specifies a \code{read} method but does not have the corresponding p
 }
 \examples{
 # returns raw JSON object
-\dontrun{get_planning_polygon(token)}
-\dontrun{get_planning_polygon(token, 2008)}
+\dontrun{get_planning_polygon(token, lat = 1.429443081, lon = 103.835005)}
+\dontrun{get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, year = 2008)}
 
 # returns dataframe of class "sf"
-\dontrun{get_planning_polygon(token, read = "sf")}
+\dontrun{get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, read = "sf")}
 
 # returns SpatialPolygonsDataFrame ("sp" object)
-\dontrun{get_planning_polygon(token, read = "rgdal")}
+\dontrun{get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, read = "rgdal")}
 
 # error: output is NULL, warning message shows status code
 \dontrun{get_planning_polygon("invalid_token")}

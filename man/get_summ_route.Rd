@@ -12,7 +12,8 @@ get_summ_route(
   date = Sys.Date(),
   time = format(Sys.time(), format = "\%T"),
   mode = NULL,
-  max_dist = NULL
+  max_dist = NULL,
+  route_geom = FALSE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ get_summ_route(
 \item{mode}{Required if \code{route = "pt"}. Accepted values are \code{transit}, \code{bus} or \code{rail}}
 
 \item{max_dist}{Optional if \code{route = "pt"}. Maximum walking distance}
+
+\item{route_geom}{Default = FALSE. Whether to return decoded route_geometry. Please ensure packages \link[googlePolylines]{googlePolylines} and \link[sf]{sf} are installed and note that this is a lossy conversion.}
 }
 \value{
 If no error occurs, a tibble of 1 x 2 with the variables:

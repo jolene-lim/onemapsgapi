@@ -1,7 +1,7 @@
 Package: onemapsgapi
 Type: Package
 Title: R Wrapper for the 'OneMap.Sg API'
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: person("Jolene", "Lim", email = "jyl2187@columbia.edu",
       role = c("aut", "cre"))
 Maintainer: Jolene Lim <jyl2187@columbia.edu>
@@ -24,12 +24,13 @@ Imports:
     tidyr,
     future,
     furrr
-RoxygenNote: 7.0.2
+RoxygenNote: 7.2.1
 Suggests: 
     knitr,
     rmarkdown,
     sf,
     rgdal,
-    sp
+    sp,
+    googlePolylines
 VignetteBuilder: 
     knitr

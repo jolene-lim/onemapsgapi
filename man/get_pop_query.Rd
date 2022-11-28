@@ -15,13 +15,26 @@ get_pop_query(token, data_type, planning_area, year, gender = NULL)
 
 \item{year}{Year for which the data should be retrieved.}
 
-\item{gender}{Optional, if specified only records for that gender will be returned. This parameter is only valid for the \code{"getEconomicStatus"}, \code{"getEthnicGroup"}, \code{"getMaritalStatus"} and \code{"getPopulationAgeGroup"} endpoints. If specified for other endpoints, the parameter will be dropped.}
+\item{gender}{Optional, valid values include \code{male} and \code{female}. If specified, only records for that gender will be returned. This parameter is only valid for the \code{"getEconomicStatus"}, \code{"getEthnicGroup"}, \code{"getMaritalStatus"} and \code{"getPopulationAgeGroup"} endpoints. If specified for other endpoints, the parameter will be dropped. If gender is not specified for valid endpoints, records for total, male and female will be returned.}
 }
 \value{
 A tibble with 1 row and values for all the corresponding variables returned by the API endpoint.
-If gender is not specified for endpoints with a gender parameter, records for total, male and female will be returned. The notable exception to this is for the \code{"getEthnicGroup"} endpoint, which only returns the total record if gender is not specified. This is because by default, this is the only API endpoint with a gender parameter that does not return gender breakdown by default.
 If an error occurs, the function will return a NULL value
 }
 \description{
 This function is a wrapper for the \href{https://docs.onemap.sg/#population-query}{Population Query API}. It only allows for querying of one data type (i.e. one of the API endpoints) for a particular town and year.
+}
+\examples{
+# output with no NA
+\dontrun{get_pop_query(token, "getOccupation", "Yishun", "2010")}
+\dontrun{get_pop_query(token, "getModeOfTransportSchool", "Bishan", "2015", "female")}
+
+# note behaviour with gender parameter not specified
+\dontrun{get_pop_query(token, "getMaritalStatus", "Bedok", "2010")}
+\dontrun{get_pop_query(token, "getEthnicGroup", "Bedok", "2010")}
+\dontrun{get_pop_query(token, "getPopulationAgeGroup", "Bedok", "2010")}
+
+# output due to error
+\dontrun{get_pop_query(token, "getSpokenAtHome", "Bedok", "2043")}
+
 }

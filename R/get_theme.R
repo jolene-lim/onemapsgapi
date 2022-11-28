@@ -6,8 +6,8 @@
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param theme OneMap theme in its \code{QUERYNAME} format. A tibble of available themes can be retrieved using \code{\link{search_themes}}
 #' @param extents Optional, Location Extents for search. This should be in the format "Lat1,\%20Lng1,Lat2,\%20Lng2". For more information, consult the \href{https://docs.onemap.sg/#retrieve-theme}{API Documentation}.
-#' @param read Optional, format to read output. Valid parameters are \code{tibble}, \code{sf} and \code{rgdal}. For "sf" objects, specify \code{read = "sf"} and for "sp" objects use \code{read = "rgdal"}. Defaults to \code{tibble} if any other value is used. Please ensure the \code{sf} package is installed, else this parameter return a tibble.
 #' @param return_info Default = \code{FALSE}. If \code{FALSE}, function only returns a tibble for query results. If \code{TRUE}, function returns output as a list containing a tibble for query information and a tibble for query results.
+#' @param read Optional, format to read output. Valid parameters are \code{tibble}, \code{sf} and \code{rgdal}. For "sf" objects, specify \code{read = "sf"} and for "sp" objects use \code{read = "rgdal"}. Defaults to \code{tibble} if any other value is used. Please ensure the \code{sf} package is installed, else this parameter return a tibble.
 #'
 #' @return If no error occurs:
 #' \describe{
@@ -30,7 +30,7 @@
 #' \dontrun{get_theme(token, "hotels", read = "sf")}
 #'
 #' # returns a list of status tibble and output tibble
-#' \dontrun{get_theme(token, "lighting", return_info = TRUE)}
+#' \dontrun{get_theme(token, "funeralparlours", return_info = TRUE)}
 #'
 #' # error: output is NULL, warning message shows status code
 #' \dontrun{get_theme("invalid_token", "hotels")}
@@ -41,7 +41,7 @@
 #' # error: output is \code{query_info}, warning message query did not return any records
 #' \dontrun{get_theme(token, "ura_parking_lot", "1.291789,%20103.7796402,1.3290461,%20103.8726032")}
 
-get_theme <- function(token, theme, extents = NULL, read = "tibble", return_info = FALSE) {
+get_theme <- function(token, theme, extents = NULL, return_info = FALSE, read = "tibble") {
   # query API
   url <- "https://developers.onemap.sg/privateapi/themesvc/retrieveTheme?"
   query <- paste(url,
@@ -84,8 +84,8 @@ get_theme <- function(token, theme, extents = NULL, read = "tibble", return_info
       if (read %in% c("sf", "rgdal") & requireNamespace("sf", quietly = TRUE)) {
         output <- st_as_sf(output, coords = c("Lng", "Lat"))
 
-        if (read == "rgdal" & requireNamespace("rgdal", quietly = TRUE)) {
-          output <- as(output, "Spatial")
+        if (read == "rgdal") {
+          output <- sf::as_Spatial(output)
         }
 
       }

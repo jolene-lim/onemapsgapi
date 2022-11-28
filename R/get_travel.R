@@ -1,7 +1,7 @@
-#' Get Travel Time and Distance
+#' Get Travel Time, Distance and Route
 #'
 #' @description
-#' This function is a wrapper for the \href{https://docs.onemap.sg/#route}{Route Service API}. It takes in a dataframe of start and end coordinates and returns the same dataframe with additional total time and total distance columns.
+#' This function is a wrapper for the \href{https://docs.onemap.sg/#route}{Route Service API}. It takes in a dataframe of start and end coordinates and returns the same dataframe with total time, total distance and optionally route geometry.
 #' The function also accepts multiple arguments for `route` and `pt_mode`, allowing users to compare various route options.
 #'
 #' Note that if `as_wide = TRUE` is selected, any columns with identical names as the additional output columns will be overwritten.
@@ -21,6 +21,7 @@
 #' @param pt_max_dist Optional if \code{route = "pt"}. Maximum walking distance
 #' @param as_wide Default = \code{TRUE}. Whether to return output as a list as a long tibble with each row a route, or a wide tibble with the same number of rows as the input tibble.
 #' @param parallel Default = \code{FALSE}. Whether to run API calls in parallel or sequentially (default).
+#' @param route_geom Default = \code{FALSE}. Whether to return decoded route_geometry. Will only be returned if \code{as_wide = FALSE}. Please ensure packages \code{googlePolylines} and \code{sf} are installed and note that this is a lossy conversion.
 #' @return Original dataframe with total time and total distance for each route type.
 #'
 #' If an error occurs, the output row will be have \code{NA}s for the additional variables, along with a warning message.
@@ -49,6 +50,12 @@
 #'     routes = c("walk", "pt"), pt_mode = c("bus", "transit"),
 #'     as_wide = FALSE)}
 #'
+#' # no error, sf dataframe
+#' \dontrun{get_travel(token, sample[1:3, ],
+#'     "start_lat", "start_lon", "end_lat", "end_lon",
+#'     routes = c("drive", "pt"), pt_mode = c("bus", "transit"),
+#'     as_wide = FALSE, route_geom = TRUE)}
+#'
 #' # with error
 #' # warning message will show start/end/route/pt_mode for which an error occurred
 #' \dontrun{get_travel(token, sample,
@@ -56,7 +63,10 @@
 #'     routes = c("cycle", "walk"))}
 
 
-get_travel <- function(token, df, origin_lat, origin_lon, destination_lat, destination_lon, routes, date = Sys.Date(), time = format(Sys.time(), format = "%T"), pt_mode = "TRANSIT", pt_max_dist = NULL, as_wide = TRUE, parallel = FALSE) {
+get_travel <- function(token, df, origin_lat, origin_lon, destination_lat, destination_lon, routes, date = Sys.Date(), time = format(Sys.time(), format = "%T"), pt_mode = "TRANSIT", pt_max_dist = NULL, as_wide = TRUE, parallel = FALSE, route_geom = FALSE) {
+
+  # ensure route_geom is returned only if long output
+  route_geom <- ifelse(as_wide, FALSE, route_geom)
 
   # preallocate list to hold each route output
   if ("pt" %in% routes) {
@@ -84,13 +94,13 @@ get_travel <- function(token, df, origin_lat, origin_lon, destination_lat, desti
       route_output <- var_df %>%
         future_pmap(function(olat, olon, dlat, dlon) get_summ_route(token = token, start = c(olat, olon), end = c(dlat, dlon),
                                                                     route = ifelse(str_sub(i, 1, 2) == "pt", "pt", i), date = date, time = time,
-                                                                    mode = str_remove(i, "pt-"), max_dist = pt_max_dist))
+                                                                    mode = str_remove(i, "pt-"), max_dist = pt_max_dist, route_geom = route_geom))
     } else {
 
       route_output <- var_df %>%
         pmap(function(olat, olon, dlat, dlon) get_summ_route(token = token, start = c(olat, olon), end = c(dlat, dlon),
                                                              route = ifelse(str_sub(i, 1, 2) == "pt", "pt", i), date = date, time = time,
-                                                             mode = str_remove(i, "pt-"), max_dist = pt_max_dist))
+                                                             mode = str_remove(i, "pt-"), max_dist = pt_max_dist, route_geom = route_geom))
     }
 
     # process output
@@ -118,6 +128,10 @@ get_travel <- function(token, df, origin_lat, origin_lon, destination_lat, desti
   } else {
     output <- output_list %>%
       reduce(bind_rows)
+
+    if (route_geom) {
+      sf::st_geometry(output) <- output$geometry
+    }
   }
 
   return(output)

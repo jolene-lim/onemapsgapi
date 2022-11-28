@@ -14,7 +14,8 @@ get_route(
   mode = NULL,
   max_dist = NULL,
   n_itineraries = 3,
-  status_info = FALSE
+  status_info = FALSE,
+  decode = FALSE
 )
 }
 \arguments{
@@ -37,12 +38,14 @@ get_route(
 \item{n_itineraries}{Optional if \code{route = "pt"}. Default = 3. The number of potential routes to provide.}
 
 \item{status_info}{Default = \code{FALSE}. Whether to return output as a list including a list of status information and a tibble of output}
+
+\item{decode}{Default = \code{FALSE}. If \code{TRUE}, output will be a sf dataframe displaying route geometry (`route_geom`) instead of a tibble. Requires the `sf` and `googlePolylines` packages. Do note that the decoding of `route_geom` is a lossy conversion.}
 }
 \value{
 If no error occurs and \code{status_info = TRUE}:
 \describe{
   \item{status_info}{A list containing information about the query status. If \code{route = "pt"}, the output contains lists \code{request_params}, \code{debug_output} and \code{elevation}. Else, the list contains the variables \code{status} and \code{status_msg}}
-  \item{result}{A tibble containing the data retrieved from the query. This is the only output if status_info = \code{FALSE}. Each row is an itinerary. Output dimensions vary between \code{route = "pt"} and other routes}
+  \item{result}{A tibble or sf dataframe containing the data retrieved from the query. This is the only output if status_info = \code{FALSE}. Each row is an itinerary. Output dimensions vary between \code{route = "pt"} and other routes}
 }
 
 If an error occurs, the output will be \code{NULL}, along with a warning message.
@@ -55,6 +58,11 @@ This function is a wrapper for the \href{https://docs.onemap.sg/#route}{Route Se
 \dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")}
 \dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "pt",
     mode = "bus", max_dist = 300, n_itineraries = 2)}
+
+# returns output sf dataframe
+\dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive"), decode = TRUE}
+\dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "pt",
+    mode = "bus", max_dist = 300, n_itineraries = 2, decode = TRUE)}
 
 # returns list of status list and output tibble
 \dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581),

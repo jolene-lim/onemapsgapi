@@ -7,6 +7,8 @@
 ### Introduction
 The OneMapSGAPI package provides useful wrappers for the [OneMapSG API](https://docs.onemap.sg/#introduction) client. It allows users to easily query spatial data from the API in a tidy format and provides additional functionalities to allow easy data manipulation. 
 
+:tada: **Version 1.1.0 is now available!** Version update features greater options to return results in spatial formats, including features to return decoded route geometry for spatial analysis and visualisation.
+
 The OneMapSg API package is now **available on CRAN-R**! :tada: :confetti_ball:
 To download the release version, run:
 ```{r}
@@ -129,7 +131,7 @@ get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")
 get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive", status_info = TRUE)
 ```
 
-- `get_travel()` allows the calculation of total time and distance for a tibble of start and end points. Users input a tibble of start and end points (and potentially other variables) and the function returns a tibble with additional columns, `total_time` and `total_dist`. Recognising that this API is most valuable for calculating total time travelled (as a improved measure of spatial distance compared to Euclidean distance), this function produces a cleaner output containing only the main variables of interest.
+- `get_travel()` allows the calculation of total time and distance for a tibble of start and end points. Users input a tibble of start and end points (and potentially other variables) and the function returns a tibble with additional columns, `total_time` and `total_dist`. Recognising that this API is most valuable for calculating total time travelled (as a improved measure of spatial distance compared to Euclidean distance), this function produces a cleaner output containing only the main variables of interest. It is also possible to return the route geometry which enables more analysis and visualisation capabilities.
 
 For large queries, allowing parallel iterations is recommended as it can halve the return time. Note that for queries involving a large volume of API calls, return time will still be limited by the API call speed.
 

@@ -42,13 +42,13 @@ get_theme_info <- function(token, theme) {
 
   }
 
-  if (names(output)[1] == "error") {
-    warning(output$error)
+  if (names(response)[1] == "error") {
+    warning(response$error)
     output <- NULL
     return(output)
 
   } else {
-    output <- output %>%
+    output <- content(response) %>%
       unlist()
 
   }
