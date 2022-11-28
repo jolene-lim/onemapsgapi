@@ -1,7 +1,7 @@
 Package: onemapsgapi
 Type: Package
 Title: R Wrapper for the 'OneMap.Sg API'
-Version: 1.0.1
+Version: 1.1.0
 Authors@R: person("Jolene", "Lim", email = "jyl2187@columbia.edu",
       role = c("aut", "cre"))
 Maintainer: Jolene Lim <jyl2187@columbia.edu>
