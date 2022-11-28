@@ -22,6 +22,7 @@ The OneMapSGAPI package provides useful wrappers for the [OneMapSG API](https://
 
 ```{r, warning = FALSE}
 library(onemapsgapi)
+library(dplyr)
 ```
 
 ## Authentication
@@ -46,7 +47,7 @@ The `get_theme_status()` function allows users to check if data associated with 
 ```{r, eval = NOT_CRAN}
 # returns named logical
 get_theme_status(token, "kindergartens")
-get_theme_status(token, "2020-01-01", "12:00:00", "hotels")
+get_theme_status(token, "hotels", "2020-01-01", "12:00:00")
 ```
 
 ```{r, eval = NOT_CRAN}
@@ -102,7 +103,7 @@ search_themes("my_invalid_token")
 ```
 
 ### Get Theme Data
-The function `get_theme()` returns data related to a particular theme, often location coordinates and other information. It returns the output as a tibble, or prints a warning message when an error is encountered. All tibbles will contain the variables: **NAME**, **DESCRIPTION**, **ADDRESSPOSTALCODE**, **ADDRESSSTREETNAME**, **Lat**, **Lng**, **ICON_NAME**, and some provide additional information; for example, query hawker centres gives additional information about the completion date of each hawker centre.
+The function `get_theme()` returns data related to a particular theme, often location coordinates and other information. It returns the output as a tibble, or prints a warning message when an error is encountered. All tibbles will contain the variables: **NAME**, **DESCRIPTION**, **ADDRESSPOSTALCODE**, **ADDRESSSTREETNAME**, **Lat**, **Lng**, **ICON_NAME**, and some provide additional information; for example, query hawker centres gives additional information about the completion date of each hawker centre. Option to return a spatial dataframe available.
 
 ```{r, eval = NOT_CRAN}
 # return all hotel data
@@ -115,8 +116,13 @@ get_theme(token, "monuments", extents = "1.291789,%20103.7796402,1.3290461,%2010
 ```
 
 ```{r, eval = NOT_CRAN}
+# return all monuments data as a sf dataframe
+get_theme(token, "monuments", read = "sf")
+```
+
+```{r, eval = NOT_CRAN}
 # returns a list of status tibble and output tibble
-get_theme(token, "lighting", return_info = TRUE) %>%
+get_theme(token, "funeralparlours", return_info = TRUE) %>%
   str()
 ```
 
@@ -148,13 +154,13 @@ get_planning_areas(token, 2008)
 If read is specified, any missing geojson objects will be dropped (this affects the "Others" planning area returned by the API). The returned outputs are NOT projected. 
 
 If read = "sf", the function returns a single "sf" dataframe with 2 columns: "name" (name of planning area) and "geometry", which contains the simple features. 
-```{r, eval = NOT_CRAN}
+```{r, eval = FALSE}
 # returns dataframe of class "sf"
 get_planning_areas(token, read = "sf")
 ```
 
-If read = "rgdal", the function returns a SpatialPolygonsDataFrame of "sp" class. The names of each planning area is recorded in the "name" column of the dataframe.
-```{r, eval = NOT_CRAN}
+If read = "rgdal", the function returns a SpatialPolygonsDataFrame of "sp" class with 2 columns: "name" (name of planning area) and "geometry".
+```{r, eval = FALSE}
 # returns SpatialPolygonsDataFrame ("sp" object)
 get_planning_areas(token, read = "rgdal")
 ```
@@ -189,28 +195,29 @@ If the parameter read is not specified, the function returns a raw JSON object a
 
 ```{r, eval = NOT_CRAN}
 # returns raw JSON object
-get_planning_polygon(token)
-get_planning_polygon(token, 2008)
+get_planning_polygon(token, lat = 1.429443081, lon = 103.835005)
+get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, year = 2008)
 ```
 
 If read = "sf", the function returns a 1 x 2 "sf" dataframe: "name" (name of planning area) and "geometry", which contains the simple feature. 
 ```{r, eval = NOT_CRAN}
 # returns dataframe of class "sf"
-get_planning_polygon(token, read = "sf")
+get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, read = "sf")
 ```
 
 If read = "rgdal", the function returns a SpatialPolygonsDataFrame of "sp" class. The names of the planning area is recorded in the "name" column of the dataframe. If an error occurs, the function returns NULL and a warning message is printed.
 ```{r, eval = NOT_CRAN}
 # returns SpatialPolygonsDataFrame ("sp" object)
-get_planning_polygon(token, read = "rgdal")
+get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, read = "rgdal")
 ```
 
 Note that if the user specifies a read method but does not have the corresponding package installed, the function will return the raw JSON and print a warning message.
 
 If an error occurs, the function returns NULL and a warning message is printed.
-```{r, eval = NOT_CRAN}
-# error: output is NULL, warning message shows status code
+```{r, eval = FALSE}
+# error & will not run: missing lat and lon arguments
 get_planning_polygon("invalid_token")
+# error: output is NULL, warning message shows status code
 get_planning_polygon(token, "invalidlat", "invalidlon")
 ```
 
@@ -222,9 +229,9 @@ The function `get_pop_queries()` allows users to query multiple datasets for mul
 
 The `gender` parameter is only valid for the **getEconomicStatus**, **getEthnicGroup**, **getMaritalStatus** and **getPopulationAgeGroup** endpoints. If specified for other endpoints, the parameter will be dropped.
 
-If gender is not specified for endpoints with a gender parameter, records for total, male and female will be returned. The notable exception to this is for the "getEthnicGroup" endpoint, which only returns the total record if gender is not specified. This is because by default, this is the only API endpoint with a gender parameter that does not return gender breakdown by default.
+If gender is not specified for endpoints which accept a gender parameter, records for total, male and female will be returned.
 
-The function returns a tibble with each row representing a town in a particular year for a particular gender, and columns with the variables returned by the API endpoint. If any API call returns no data, the values will be NA but the row will be returned. However, if all data_types do not return data for that town and year, no row will be returned for it.
+The function returns a tibble with each row representing a town in a particular year for a particular gender, and columns representing the variables returned by the API endpoint. If any API call returns no data, the values will be NA but the row will be returned. However, if all data_types do not return data for that town and year, no row will be returned for it.
 
 ```{r, eval = NOT_CRAN}
 # example: returns output with no NA
@@ -236,7 +243,7 @@ get_pop_queries(token, c("getEconomicStatus", "getEthnicGroup"),
                 "Yishun", "2010", "female")
 ```
 
-If data types requested is a mix of those that accept gender parameters and does that do not, only `gender = "Total"` rows will have all records. The data types that does not accept gender params will be in `gender = Total`. 
+If the data types request contains a mix of those that accept gender parameters and those that do not, only `gender = "Total"` rows will display all records. The data types that do not accept gender params will return results under `gender = Total`. 
 
 ```{r, eval = NOT_CRAN}
 # example: gender not specified
@@ -250,7 +257,7 @@ get_pop_queries(token, c("getEconomicStatus", "getOccupation", "getLanguageLiter
                 "Bedok", "2010", gender = "female")
 ```
 
-If all data_types do return data for that town and year, no row will be returned for it. A warning message will show data_type/town/year/gender for which an error occurred.
+If all data_types do not return data for that town and year, no row will be returned. A warning message will show data_type/town/year/gender for which an error occurred.
 
 ```{r, eval = NOT_CRAN}
 # example: no records for 2012
@@ -286,13 +293,16 @@ get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581),
   str()
 ```
 
+By default, the API returns route geometry in an encoded format. To return results in a decoded `sf` format, set the parameter `decode = TRUE`.
+```{r, eval = NOT_CRAN}
+# example: returns sf dataframe with decoded route geometry
+get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive", decode = TRUE)
+get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "pt", mode = "bus", max_dist = 300, n_itineraries = 2, decode = TRUE)
+```
+
 ```{r, eval = NOT_CRAN}
 # example: error, warning message shows status code
 get_route("invalid_token", c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")
-
-# example: error, warning message shows error message from request
-get_route(token, c(300, 300), c(400, 500), "cycle")
-get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "fly")
 ```
 
 ### Total time and distance matrix
@@ -328,11 +338,18 @@ get_travel(token, sample[1:3, ],
 By default, the data appears in a wide format, but users can specify for the output to be in long format.
 ```{r, eval = NOT_CRAN}
 # example: long format
-# no error, long format
 get_travel(token, sample[1:3, ],
     "start_lat", "start_lon", "end_lat", "end_lon",
     routes = c("walk", "pt"), pt_mode = c("bus", "transit"),
     as_wide = FALSE)
+```
+
+There is also the option to return a sf dataframe in long format by specifying `route_geom = TRUE`. This allows, for example, mapping of different route options.
+```{r, eval = NOT_CRAN}
+get_travel(token, sample[1:3, ],
+    "start_lat", "start_lon", "end_lat", "end_lon",
+    routes = c("drive", "pt"), pt_mode = c("bus", "transit"), 
+    as_wide = FALSE, route_geom = TRUE)
 ```
 
 If an error occurs, the output row will be have NAs for the additional variables, along with a warning message. The warning message will show start/end/route/pt_mode for which an error occurred.

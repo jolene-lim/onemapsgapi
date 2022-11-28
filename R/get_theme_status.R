@@ -16,7 +16,7 @@
 #' @examples
 #' # returns named logical
 #' \dontrun{get_theme_status(token, "kindergartens")}
-#' \dontrun{get_theme_status(token, "2020-01-01", "12:00:00", "hotels")}
+#' \dontrun{get_theme_status(token, "hotels", "2020-01-01", "12:00:00")}
 #'
 #' # returns NULL, warning message shows status code
 #' \dontrun{get_theme_status("invalid_token", "blood_bank")}

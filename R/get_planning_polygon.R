@@ -7,7 +7,7 @@
 #' @param lat Latitude of location point
 #' @param lon Longitude of location point
 #' @param year Optional, check \href{https://docs.onemap.sg/#planning-area-query}{documentation} for valid options. Invalid requests will are ignored by the API.
-#' @param read Optional, which package to use to read geojson object. For "sf" objects, specify \code{read = "sf"} and for "sp" objects use \code{read = "rgdal"}.
+#' @param read Optional, defaults to \code{tibble}. Package to use to read geojson object. For "sf" objects, specify \code{read = "sf"} and for "sp" objects use \code{read = "rgdal"}.
 #'
 #' @return If the parameter \code{read} is not specified, the function returns a raw JSON object a list containing the planning area name and a geojson string representing the polygon. \cr \cr
 #' If \code{read = "sf"}, the function returns a 1 x 2 "sf" dataframe: "name" (name of planning area) and "geometry", which contains the simple feature. \cr \cr
@@ -21,21 +21,21 @@
 #'
 #' @examples
 #' # returns raw JSON object
-#' \dontrun{get_planning_polygon(token)}
-#' \dontrun{get_planning_polygon(token, 2008)}
+#' \dontrun{get_planning_polygon(token, lat = 1.429443081, lon = 103.835005)}
+#' \dontrun{get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, year = 2008)}
 #'
 #' # returns dataframe of class "sf"
-#' \dontrun{get_planning_polygon(token, read = "sf")}
+#' \dontrun{get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, read = "sf")}
 #'
 #' # returns SpatialPolygonsDataFrame ("sp" object)
-#' \dontrun{get_planning_polygon(token, read = "rgdal")}
+#' \dontrun{get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, read = "rgdal")}
 #'
 #' # error: output is NULL, warning message shows status code
 #' \dontrun{get_planning_polygon("invalid_token")}
 #' \dontrun{get_planning_polygon(token, "invalidlat", "invalidlon")}
 
 
-get_planning_polygon <- function(token, lat, lon, year = NULL, read = NULL) {
+get_planning_polygon <- function(token, lat, lon, year = NULL, read = "tibble") {
 
   # query API
   url <- "https://developers.onemap.sg/privateapi/popapi/getPlanningarea"
@@ -66,15 +66,16 @@ get_planning_polygon <- function(token, lat, lon, year = NULL, read = NULL) {
   output <- content(response)
 
   # read into requested format
-  if (read == "sf" & requireNamespace("sf", quietly = TRUE)) {
+  if (read %in% c("sf", "rgdal") & requireNamespace("sf", quietly = TRUE)) {
+    geom_str <- str_replace(str_replace(str_replace(output[[1]][["geojson"]], 'coordinates', '"coordinates"'), 'type', '"type"'), 'MultiPolygon', '"MultiPolygon"')
+    output <- bind_cols(name = output[[1]][["pln_area_n"]], sf::st_read(geom_str, quiet = TRUE))
+    sf::st_geometry(output) <- output$geometry
 
-    output <- bind_cols(name = output[[1]]$pln_area_n, sf::st_read(output[[1]]$geojson, quiet = TRUE))
+    if (read == "rgdal") {
+      output <- sf::as_Spatial(output)
+    }
 
-  } else if (read == "rgdal" & requireNamespace("rgdal", quietly = TRUE)) {
-
-    output <- merge(rgdal::readOGR(output[[1]]$geojson, verbose = FALSE), tibble(name = output[[1]]$pln_area_n))
-
-  } else if (!is.null(read)) {
+  } else if (read != "tibble") {
     warning(paste0("Failed to read geojson. Please ensure you have package ", read, " installed.
                    Only packages sf and rgdal (for sp) are supported currently."))
   }

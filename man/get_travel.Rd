@@ -17,7 +17,8 @@ get_travel(
   pt_mode = "TRANSIT",
   pt_max_dist = NULL,
   as_wide = TRUE,
-  parallel = FALSE
+  parallel = FALSE,
+  route_geom = FALSE
 )
 }
 \arguments{
@@ -46,6 +47,8 @@ get_travel(
 \item{as_wide}{Default = \code{TRUE}. Whether to return output as a list as a long tibble with each row a route, or a wide tibble with the same number of rows as the input tibble.}
 
 \item{parallel}{Default = \code{FALSE}. Whether to run API calls in parallel or sequentially (default).}
+
+\item{route_geom}{Default = \code{FALSE}. Whether to return decoded route_geometry. Will only be returned if \code{as_wide = FALSE}. Please ensure packages \code{googlePolylines} and \code{sf} are installed and note that this is a lossy conversion.}
 }
 \value{
 Original dataframe with total time and total distance for each route type.

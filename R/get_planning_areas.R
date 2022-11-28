@@ -79,7 +79,7 @@ get_planning_areas <- function(token, year = NULL, read = NULL) {
       reduce(rbind)
 
     if (read == "rdgal") {
-      output <- as(output, "Spatial")
+      output <- sf::as_Spatial(output)
     }
 
   } else {

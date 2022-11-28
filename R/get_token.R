@@ -29,6 +29,13 @@ get_token <- function(email, password, hide_message = FALSE) {
   # else return results
   } else {
     content <- content(response)
+
+    if (names(content)[[1]] == "error") {
+      output <- NULL
+      warning(content$error)
+      return(output)
+    }
+
     output <- content$access_token
 
     # optionally, tell user when the token will expire

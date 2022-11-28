@@ -23,9 +23,8 @@ If an error occurs, the function returns NULL and a warning message is printed.
 This function is a wrapper for the \href{https://docs.onemap.sg/#planning-area-polygons}{Planning Area Polygons API}. It returns the data either in raw format or a combined sf or sp object.
 }
 \note{
-The \code{read = "rgdal"} option will take a longer time to return an output than the \code{read = "sf"} option. \cr \cr
 If \code{read} is specified, any missing geojson objects will be dropped (this affects the "Others" planning area returned by the API). The returned outputs are NOT projected. \cr \cr
-If the user specifies a \code{read} method but does not have the corresponding package installed, the function will return the raw JSON and print a warning message.
+If the user specifies \code{read = "sp"}  but does not have the \code{sp} package installed, the function will return the raw JSON and print a warning message.
 }
 \examples{
 # returns raw JSON object
