@@ -9,7 +9,7 @@ get_planning_areas(token, year = NULL, read = NULL)
 \arguments{
 \item{token}{User's API token. This can be retrieved using \code{\link{get_token}}}
 
-\item{year}{Optional, check \href{https://docs.onemap.sg/#planning-area-polygons}{documentation} for valid options. Invalid requests will are ignored by the API.}
+\item{year}{Optional, check \href{https://www.onemap.gov.sg/docs/#planning-area-polygons}{documentation} for valid options. Invalid requests will are ignored by the API.}
 
 \item{read}{Optional, which package to use to read geojson object. For "sf" objects, specify \code{read = "sf"} and for "sp" objects use \code{read = "rgdal"}. Note that if used, any missing geojson objects will be dropped (this affects the "Others" planning area returned by the API).}
 }
@@ -20,7 +20,7 @@ If \code{read = "rgdal"}, the function returns a SpatialPolygonsDataFrame of "sp
 If an error occurs, the function returns NULL and a warning message is printed.
 }
 \description{
-This function is a wrapper for the \href{https://docs.onemap.sg/#planning-area-polygons}{Planning Area Polygons API}. It returns the data either in raw format or a combined sf or sp object.
+This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#planning-area-polygons}{Planning Area Polygons API}. It returns the data either in raw format or a combined sf or sp object.
 }
 \note{
 If \code{read} is specified, any missing geojson objects will be dropped (this affects the "Others" planning area returned by the API). The returned outputs are NOT projected. \cr \cr

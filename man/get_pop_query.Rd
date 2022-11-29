@@ -22,7 +22,7 @@ A tibble with 1 row and values for all the corresponding variables returned by t
 If an error occurs, the function will return a NULL value
 }
 \description{
-This function is a wrapper for the \href{https://docs.onemap.sg/#population-query}{Population Query API}. It only allows for querying of one data type (i.e. one of the API endpoints) for a particular town and year.
+This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#population-query}{Population Query API}. It only allows for querying of one data type (i.e. one of the API endpoints) for a particular town and year.
 }
 \examples{
 # output with no NA

@@ -1,7 +1,7 @@
 #' Get Route Information
 #'
 #' @description
-#' This function is a wrapper for the \href{https://docs.onemap.sg/#route}{Route Service API}. It returns the full route data in a tibble format, or a list of 2 tibbles with results and status information if desired.
+#' This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#route}{Route Service API}. It returns the full route data in a tibble format, or a list of 2 tibbles with results and status information if desired.
 #'
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param start Vector of c(lat, lon) coordinates for the route start point
@@ -31,7 +31,8 @@
 #'     mode = "bus", max_dist = 300, n_itineraries = 2)}
 #'
 #' # returns output sf dataframe
-#' \dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive", decode = TRUE)}
+#' \dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581),
+#'     "drive", decode = TRUE)}
 #' \dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "pt",
 #'     mode = "bus", max_dist = 300, n_itineraries = 2, decode = TRUE)}
 #'
@@ -119,7 +120,7 @@ get_route <- function(token, start, end, route, date = Sys.Date(), time = format
     if (decode & requireNamespace("googlePolylines", quietly = TRUE) & requireNamespace("sf", quietly = TRUE)) {
       route_geom <- map(output$plan$itineraries, function(x) map_chr(x$legs, function(x) x$legGeometry$points)) %>%
         map(function(x) googlePolylines::decode(x)) %>%
-        map(function(x) map(x, function(x) select(x, lon, lat) %>% data.matrix())) %>%
+        map(function(x) map(x, function(x) select(x, "lon", "lat") %>% data.matrix())) %>%
         map(function(x) sf::st_multilinestring(x)) %>%
         sf::st_sfc(crs=4326)
 
@@ -148,7 +149,7 @@ get_route <- function(token, start, end, route, date = Sys.Date(), time = format
     if (decode & requireNamespace("googlePolylines", quietly = TRUE) & requireNamespace("sf", quietly = TRUE)) {
       dec <- googlePolylines::decode(result$route_geom[[1]])
       route_geom <- dec[[1]] %>%
-        select(lon, lat) %>%
+        select("lon", "lat") %>%
         data.matrix %>%
         sf::st_linestring() %>%
         sf::st_sfc(crs = 4326)

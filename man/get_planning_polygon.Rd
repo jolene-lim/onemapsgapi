@@ -13,7 +13,7 @@ get_planning_polygon(token, lat, lon, year = NULL, read = "tibble")
 
 \item{lon}{Longitude of location point}
 
-\item{year}{Optional, check \href{https://docs.onemap.sg/#planning-area-query}{documentation} for valid options. Invalid requests will are ignored by the API.}
+\item{year}{Optional, check \href{https://www.onemap.gov.sg/docs/#planning-area-query}{documentation} for valid options. Invalid requests will are ignored by the API.}
 
 \item{read}{Optional, defaults to \code{tibble}. Package to use to read geojson object. For "sf" objects, specify \code{read = "sf"} and for "sp" objects use \code{read = "rgdal"}.}
 }
@@ -24,7 +24,7 @@ If \code{read = "rgdal"}, the function returns a SpatialPolygonsDataFrame of "sp
 If an error occurs, the function returns NULL and a warning message is printed.
 }
 \description{
-This function is a wrapper for the \href{https://docs.onemap.sg/#planning-area-query}{Planning Area Query API}. It returns the spatial polygon data matching the specified location point, either in raw format, as an sf or sp object.
+This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#planning-area-query}{Planning Area Query API}. It returns the spatial polygon data matching the specified location point, either in raw format, as an sf or sp object.
 }
 \note{
 If the user specifies a \code{read} method but does not have the corresponding package installed, the function will return the raw JSON and print a warning message.

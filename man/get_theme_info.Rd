@@ -16,7 +16,7 @@ A named character vector of Theme Name and Query Name.
 If an error occurred, the function returns \code{NULL} along with a warning message.
 }
 \description{
-This function is a wrapper for the \href{https://docs.onemap.sg/#get-theme-info}{Get Theme Info API}. It returns a named character vector of Theme Name and Query Name.
+This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#get-theme-info}{Get Theme Info API}. It returns a named character vector of Theme Name and Query Name.
 }
 \examples{
 # returns named character vector

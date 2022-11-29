@@ -33,7 +33,7 @@ get_summ_route(
 
 \item{max_dist}{Optional if \code{route = "pt"}. Maximum walking distance}
 
-\item{route_geom}{Default = FALSE. Whether to return decoded route_geometry. Please ensure packages \link[googlePolylines]{googlePolylines} and \link[sf]{sf} are installed and note that this is a lossy conversion.}
+\item{route_geom}{Default = FALSE. Whether to return decoded route_geometry. Please ensure packages \code{googlePolylines} and \code{sf} are installed and note that this is a lossy conversion.}
 }
 \value{
 If no error occurs, a tibble of 1 x 2 with the variables:
@@ -45,6 +45,6 @@ If no error occurs, a tibble of 1 x 2 with the variables:
 If an error occurs, the output will be \code{NA}, along with a warning message.
 }
 \description{
-This function is a wrapper for the \href{https://docs.onemap.sg/#route}{Route Service API}. It is similar to \code{\link{get_route}}, except it returns a tibble with only total time and total distance, and also optionally, the start coordinates and end coordinates.
+This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#route}{Route Service API}. It is similar to \code{\link{get_route}}, except it returns a tibble with only total time and total distance, and also optionally, the start coordinates and end coordinates.
 If \code{route = "pt"}, only the best route is chosen (i.e. \code{n_itineraries = 1}).
 }

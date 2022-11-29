@@ -4,18 +4,18 @@
 \alias{get_theme}
 \title{Get Theme Data from OneMap.Sg}
 \usage{
-get_theme(token, theme, extents = NULL, read = "tibble", return_info = FALSE)
+get_theme(token, theme, extents = NULL, return_info = FALSE, read = "tibble")
 }
 \arguments{
 \item{token}{User's API token. This can be retrieved using \code{\link{get_token}}}
 
 \item{theme}{OneMap theme in its \code{QUERYNAME} format. A tibble of available themes can be retrieved using \code{\link{search_themes}}}
 
-\item{extents}{Optional, Location Extents for search. This should be in the format "Lat1,\%20Lng1,Lat2,\%20Lng2". For more information, consult the \href{https://docs.onemap.sg/#retrieve-theme}{API Documentation}.}
-
-\item{read}{Optional, format to read output. Valid parameters are \code{tibble}, \code{sf} and \code{rgdal}. For "sf" objects, specify \code{read = "sf"} and for "sp" objects use \code{read = "rgdal"}. Defaults to \code{tibble} if any other value is used. Please ensure the \code{sf} package is installed, else this parameter return a tibble.}
+\item{extents}{Optional, Location Extents for search. This should be in the format "Lat1,\%20Lng1,Lat2,\%20Lng2". For more information, consult the \href{https://www.onemap.gov.sg/docs/#retrieve-theme}{API Documentation}.}
 
 \item{return_info}{Default = \code{FALSE}. If \code{FALSE}, function only returns a tibble for query results. If \code{TRUE}, function returns output as a list containing a tibble for query information and a tibble for query results.}
+
+\item{read}{Optional, format to read output. Valid parameters are \code{tibble}, \code{sf} and \code{rgdal}. For "sf" objects, specify \code{read = "sf"} and for "sp" objects use \code{read = "rgdal"}. Defaults to \code{tibble} if any other value is used. Please ensure the \code{sf} package is installed, else this parameter return a tibble.}
 }
 \value{
 If no error occurs:
@@ -28,7 +28,7 @@ If an error occurs, the output will be \code{NULL}, along with a warning message
 For non-error queries where 0 results are returned, the output will be \code{query_info}, along with a warning message.
 }
 \description{
-This function is a wrapper for the \href{https://docs.onemap.sg/#retrieve-theme}{Retrieve Theme API}. It returns the data as cleaned tibbles.
+This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#retrieve-theme}{Retrieve Theme API}. It returns the data as cleaned tibbles.
 }
 \examples{
 # returns a tibble of output
@@ -40,7 +40,7 @@ This function is a wrapper for the \href{https://docs.onemap.sg/#retrieve-theme}
 \dontrun{get_theme(token, "hotels", read = "sf")}
 
 # returns a list of status tibble and output tibble
-\dontrun{get_theme(token, "lighting", return_info = TRUE)}
+\dontrun{get_theme(token, "funeralparlours", return_info = TRUE)}
 
 # error: output is NULL, warning message shows status code
 \dontrun{get_theme("invalid_token", "hotels")}

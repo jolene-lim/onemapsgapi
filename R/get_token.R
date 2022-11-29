@@ -1,8 +1,8 @@
 #' Extract API token from OneMap.Sg
 #'
 #' @description
-#' This function is a wrapper for the \href{https://docs.onemap.sg/#authentication-service-post}{OneMap Authentication Service API}. It allows users to generate a API token from OneMap.Sg.
-#' Using the API requires that users have a registered email address with Onemap.Sg. Users can register themselves using \href{https://developers.onemap.sg/signup/}{OneMap.Sg's form}.
+#' This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#authentication-service-post}{OneMap Authentication Service API}. It allows users to generate a API token from OneMap.Sg.
+#' Using the API requires that users have a registered email address with Onemap.Sg. Users can register themselves using \href{https://developers.onemap.sg/register/}{OneMap.Sg's form}.
 #'
 #' @param email User's registered email address.
 #' @param password User's password.

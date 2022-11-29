@@ -1,7 +1,7 @@
 #' Get Travel Time, Distance and Route
 #'
 #' @description
-#' This function is a wrapper for the \href{https://docs.onemap.sg/#route}{Route Service API}. It takes in a dataframe of start and end coordinates and returns the same dataframe with total time, total distance and optionally route geometry.
+#' This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#route}{Route Service API}. It takes in a dataframe of start and end coordinates and returns the same dataframe with total time, total distance and optionally route geometry.
 #' The function also accepts multiple arguments for `route` and `pt_mode`, allowing users to compare various route options.
 #'
 #' Note that if `as_wide = TRUE` is selected, any columns with identical names as the additional output columns will be overwritten.

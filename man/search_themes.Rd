@@ -26,7 +26,7 @@ If no error occurs, a tibble with the following variables:
 If an error occurs, the function returns \code{NULL}, along with a warning message.
 }
 \description{
-This function is a wrapper for the \href{https://docs.onemap.sg/#get-all-themes-info}{Get All Themes Info API}. It allows users to get a tibble of all available themes, and their details, in the OneMap.Sg API. It also provides an additional functionality where users can subset their results using search terms.
+This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#get-all-themes-info}{Get All Themes Info API}. It allows users to get a tibble of all available themes, and their details, in the OneMap.Sg API. It also provides an additional functionality where users can subset their results using search terms.
 }
 \examples{
 # valid

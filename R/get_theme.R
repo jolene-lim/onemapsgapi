@@ -1,11 +1,11 @@
 #' Get Theme Data from OneMap.Sg
 #'
 #' @description
-#' This function is a wrapper for the \href{https://docs.onemap.sg/#retrieve-theme}{Retrieve Theme API}. It returns the data as cleaned tibbles.
+#' This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#retrieve-theme}{Retrieve Theme API}. It returns the data as cleaned tibbles.
 #'
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param theme OneMap theme in its \code{QUERYNAME} format. A tibble of available themes can be retrieved using \code{\link{search_themes}}
-#' @param extents Optional, Location Extents for search. This should be in the format "Lat1,\%20Lng1,Lat2,\%20Lng2". For more information, consult the \href{https://docs.onemap.sg/#retrieve-theme}{API Documentation}.
+#' @param extents Optional, Location Extents for search. This should be in the format "Lat1,\%20Lng1,Lat2,\%20Lng2". For more information, consult the \href{https://www.onemap.gov.sg/docs/#retrieve-theme}{API Documentation}.
 #' @param return_info Default = \code{FALSE}. If \code{FALSE}, function only returns a tibble for query results. If \code{TRUE}, function returns output as a list containing a tibble for query information and a tibble for query results.
 #' @param read Optional, format to read output. Valid parameters are \code{tibble}, \code{sf} and \code{rgdal}. For "sf" objects, specify \code{read = "sf"} and for "sp" objects use \code{read = "rgdal"}. Defaults to \code{tibble} if any other value is used. Please ensure the \code{sf} package is installed, else this parameter return a tibble.
 #'
@@ -82,7 +82,7 @@ get_theme <- function(token, theme, extents = NULL, return_info = FALSE, read = 
         separate(col = "LatLng", into = c("Lat", "Lng"), sep = ",")
 
       if (read %in% c("sf", "rgdal") & requireNamespace("sf", quietly = TRUE)) {
-        output <- st_as_sf(output, coords = c("Lng", "Lat"))
+        output <- sf::st_as_sf(output, coords = c("Lng", "Lat"))
 
         if (read == "rgdal") {
           output <- sf::as_Spatial(output)

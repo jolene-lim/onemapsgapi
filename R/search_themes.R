@@ -1,7 +1,7 @@
 #' Search for Themes available on OneMap.Sg
 #'
 #' @description
-#' This function is a wrapper for the \href{https://docs.onemap.sg/#get-all-themes-info}{Get All Themes Info API}. It allows users to get a tibble of all available themes, and their details, in the OneMap.Sg API. It also provides an additional functionality where users can subset their results using search terms.
+#' This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#get-all-themes-info}{Get All Themes Info API}. It allows users to get a tibble of all available themes, and their details, in the OneMap.Sg API. It also provides an additional functionality where users can subset their results using search terms.
 #'
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param ... Optional Search terms to subset results; results with any of search terms will be returned. Search terms are not case-sensitive.

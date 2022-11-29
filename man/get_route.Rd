@@ -51,7 +51,7 @@ If no error occurs and \code{status_info = TRUE}:
 If an error occurs, the output will be \code{NULL}, along with a warning message.
 }
 \description{
-This function is a wrapper for the \href{https://docs.onemap.sg/#route}{Route Service API}. It returns the full route data in a tibble format, or a list of 2 tibbles with results and status information if desired.
+This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#route}{Route Service API}. It returns the full route data in a tibble format, or a list of 2 tibbles with results and status information if desired.
 }
 \examples{
 # returns output tibble
@@ -60,7 +60,8 @@ This function is a wrapper for the \href{https://docs.onemap.sg/#route}{Route Se
     mode = "bus", max_dist = 300, n_itineraries = 2)}
 
 # returns output sf dataframe
-\dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive"), decode = TRUE}
+\dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581),
+    "drive", decode = TRUE)}
 \dontrun{get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "pt",
     mode = "bus", max_dist = 300, n_itineraries = 2, decode = TRUE)}
 

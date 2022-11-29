@@ -1,7 +1,7 @@
 #' Check Theme Status
 #'
 #' @description
-#' This function is a wrapper for the \href{https://docs.onemap.sg/#check-theme-status}{Check Theme Status API}. It returns a named logical indicating if the theme is updated at a specific date.
+#' This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#check-theme-status}{Check Theme Status API}. It returns a named logical indicating if the theme is updated at a specific date.
 #'
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param theme Query name of theme. Themes’ query names can be retrieved using \code{\link{search_themes}}.

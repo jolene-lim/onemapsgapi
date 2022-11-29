@@ -5,7 +5,7 @@ Version: 1.1.0
 Authors@R: person("Jolene", "Lim", email = "jyl2187@columbia.edu",
       role = c("aut", "cre"))
 Maintainer: Jolene Lim <jyl2187@columbia.edu>
-Description: An R wrapper for the 'OneMap.Sg' API <https://docs.onemap.sg/>. 
+Description: An R wrapper for the 'OneMap.Sg' API <https://www.onemap.gov.sg/docs/>. 
     Functions help users query data from the API and return raw JSON data
     in "tidy" formats. Support is also available for users to retrieve data from multiple API calls 
     and integrate results into single dataframes, without
