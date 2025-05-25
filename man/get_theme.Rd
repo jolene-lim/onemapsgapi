@@ -4,9 +4,6 @@
 \alias{get_theme}
 \title{Get Theme Data from OneMap.Sg}
 \usage{
-<<<<<<< Updated upstream
-get_theme(token, theme, extents = NULL, read = "tibble", return_info = FALSE)
-=======
 get_theme(
   token,
   theme,
@@ -14,7 +11,6 @@ get_theme(
   return_info = FALSE,
   return_spatial = FALSE
 )
->>>>>>> Stashed changes
 }
 \arguments{
 \item{token}{User's API token. This can be retrieved using \code{\link{get_token}}}
@@ -23,13 +19,9 @@ get_theme(
 
 \item{extents}{Optional, Location Extents for search. This should be in the format "Lat1,\%20Lng1,Lat2,\%20Lng2". For more information, consult the \href{https://docs.onemap.sg/#retrieve-theme}{API Documentation}.}
 
-<<<<<<< Updated upstream
-\item{read}{Optional, format to read output. Valid parameters are \code{tibble}, \code{sf} and \code{rgdal}. For "sf" objects, specify \code{read = "sf"} and for "sp" objects use \code{read = "rgdal"}. Defaults to \code{tibble} if any other value is used. Please ensure the \code{sf} package is installed, else this parameter return a tibble.}
-
 \item{return_info}{Default = \code{FALSE}. If \code{FALSE}, function only returns a tibble for query results. If \code{TRUE}, function returns output as a list containing a tibble for query information and a tibble for query results.}
-=======
+
 \item{return_spatial}{Default = \code{FALSE}. If \code{FALSE}, function returns a tibble. If \code{TRUE}, function returns an \code{sf} tibble.}
->>>>>>> Stashed changes
 }
 \value{
 If no error occurs:
@@ -42,11 +34,7 @@ If an error occurs, an error will be raised, along with the API's error message 
 For non-error queries where 0 results are returned, the output will be \code{query_info}, along with a warning message.
 }
 \description{
-<<<<<<< Updated upstream
-This function is a wrapper for the \href{https://docs.onemap.sg/#retrieve-theme}{Retrieve Theme API}. It returns the data as cleaned tibbles.
-=======
 This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/themes/#retrieveTheme}{Retrieve Theme API}. It returns the data as cleaned tibbles.
->>>>>>> Stashed changes
 }
 \examples{
 # returns a tibble of output
@@ -58,7 +46,7 @@ This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/theme
 \dontrun{get_theme(token, "hotels", return_spatial = TRUE)}
 
 # returns a list of status tibble and output tibble
-\dontrun{get_theme(token, "lighting", return_info = TRUE)}
+\dontrun{get_theme(token, "funeralparlours", return_info = TRUE)}
 
 # error: throws an error with error message and status code
 \dontrun{get_theme("invalid_token", "hotels")}

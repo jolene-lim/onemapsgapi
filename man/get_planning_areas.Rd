@@ -9,7 +9,7 @@ get_planning_areas(token, year = NULL, return_spatial = FALSE)
 \arguments{
 \item{token}{User's API token. This can be retrieved using \code{\link{get_token}}}
 
-\item{year}{Optional, check \href{https://docs.onemap.sg/#planning-area-polygons}{documentation} for valid options. Invalid requests will are ignored by the API.}
+\item{year}{Optional, check \href{https://www.onemap.gov.sg/docs/#planning-area-polygons}{documentation} for valid options. Invalid requests will are ignored by the API.}
 
 \item{return_spatial}{Optional, whether to return the result as a \code{sf} tibble instead of JSON object. Default value is \code{FALSE}}
 }
@@ -19,11 +19,7 @@ If \code{return_spatial = TRUE}, the function returns a single "sf" tibble with 
 If an error occurs, the function throws an error with the API error message and status code.
 }
 \description{
-<<<<<<< Updated upstream
-This function is a wrapper for the \href{https://docs.onemap.sg/#planning-area-polygons}{Planning Area Polygons API}. It returns the data either in raw format or a combined sf or sp object.
-=======
 This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#planning-area-polygons}{Planning Area Polygons API}. It returns the data either in raw format or a combined sf object.
->>>>>>> Stashed changes
 }
 \note{
 If the user specifies \code{return_spatial = TRUE}  but does not have the \code{sf} package installed, the function will return the raw JSON and print a warning message.

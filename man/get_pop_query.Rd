@@ -22,11 +22,7 @@ A tibble with 1 row and values for all the corresponding variables returned by t
 If an error occurs, the function returns NULL and a warning message. This differs from the error handling of other functions in this package to prevent collective failure for \code{get_pop_queries}.
 }
 \description{
-<<<<<<< Updated upstream
-This function is a wrapper for the \href{https://docs.onemap.sg/#population-query}{Population Query API}. It only allows for querying of one data type (i.e. one of the API endpoints) for a particular town and year.
-=======
 This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/populationquery}{Population Query API}. It only allows for querying of one data type (i.e. one of the API endpoints) for a particular town and year.
->>>>>>> Stashed changes
 }
 \examples{
 # output with no NA

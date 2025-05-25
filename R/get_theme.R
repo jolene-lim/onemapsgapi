@@ -1,11 +1,7 @@
 #' Get Theme Data from OneMap.Sg
 #'
 #' @description
-<<<<<<< Updated upstream
-#' This function is a wrapper for the \href{https://docs.onemap.sg/#retrieve-theme}{Retrieve Theme API}. It returns the data as cleaned tibbles.
-=======
 #' This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/themes/#retrieveTheme}{Retrieve Theme API}. It returns the data as cleaned tibbles.
->>>>>>> Stashed changes
 #'
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param theme OneMap theme in its \code{QUERYNAME} format. A tibble of available themes can be retrieved using \code{\link{search_themes}}
@@ -57,54 +53,10 @@ get_theme <- function(token, theme, extents = NULL, return_info = FALSE, return_
   response <- req_perform(req)
   query_results <- resp_body_json(response)
 
-<<<<<<< Updated upstream
-    # error check: invalid parameters
-    if (names(query_results[[1]][[1]][1]) == "ErrorMessage") {
-      output <- NULL
-      error_msg <- query_results[[1]][[1]][[1]][[1]]
-      warning(paste("The request returned the following error message:", error_msg, sep = " "))
-
-    # error check: output length 0
-    } else if (length(query_results$SrchResults) == 1) {
-      output <- query_results[[1]][[1]] %>%
-        unlist() %>% t() %>%
-        as_tibble()
-      warning("There are 0 matching records for your query.")
-
-    } else {
-
-      # transform output to dataframe
-      output <- query_results[[1]][-1] %>%
-        reduce(bind_rows) %>%
-        separate(col = "LatLng", into = c("Lat", "Lng"), sep = ",")
-
-      if (read %in% c("sf", "rgdal") & requireNamespace("sf", quietly = TRUE)) {
-        output <- st_as_sf(output, coords = c("Lng", "Lat"))
-
-        if (read == "rgdal") {
-          output <- sf::as_Spatial(output)
-        }
-
-      }
-
-      # transform output to a list containing query info and query results if user wants info
-      if (return_info) {
-
-        # store query info
-        query_info <- query_results[[1]][[1]] %>%
-          unlist() %>% t() %>%
-          as_tibble()
-
-        # reformat output
-        output <- list(query_info = query_info, query_results = output)
-      }
+    # error check: invalid token
+    if ("message" %in% names(query_results)) {
+      stop(str_c("The request returned an error message: ", query_results$message), " Status Code: ", resp_status(response))
     }
-=======
-  # error check: invalid token
-  if ("message" %in% names(query_results)) {
-    stop(str_c("The request returned an error message: ", query_results$message), " Status Code: ", resp_status(response))
->>>>>>> Stashed changes
-  }
 
   # error check: output length 0
   if (length(query_results$SrchResults) == 1) {
@@ -116,29 +68,29 @@ get_theme <- function(token, theme, extents = NULL, return_info = FALSE, return_
       as_tibble()
     warning("There are 0 matching records for your query.")
 
-  # transform output to dataframe
+    # transform output to dataframe
   } else{
-  output <- query_results[[1]][-1] %>%
-    reduce(bind_rows) %>%
-    separate(col = "LatLng", into = c("Lat", "Lng"), sep = ",")
+    output <- query_results[[1]][-1] %>%
+      reduce(bind_rows) %>%
+      separate(col = "LatLng", into = c("Lat", "Lng"), sep = ",")
 
-  if (return_spatial & requireNamespace("sf", quietly = TRUE)) {
-    output <- sf::st_as_sf(output, coords = c("Lng", "Lat"))
+    if (return_spatial & requireNamespace("sf", quietly = TRUE)) {
+      output <- sf::st_as_sf(output, coords = c("Lng", "Lat"))
+    }
+
+
+    # transform output to a list containing query info and query results if user wants info
+    if (return_info) {
+
+      # store query info
+      query_info <- query_results[[1]][[1]] %>%
+        unlist() %>% t() %>%
+        as_tibble()
+
+      # reformat output
+      output <- list(query_info = query_info, query_results = output)
+    }
   }
-
-
-  # transform output to a list containing query info and query results if user wants info
-  if (return_info) {
-
-    # store query info
-    query_info <- query_results[[1]][[1]] %>%
-      unlist() %>% t() %>%
-      as_tibble()
-
-    # reformat output
-    output <- list(query_info = query_info, query_results = output)
-  }
-}
   output
 
 }

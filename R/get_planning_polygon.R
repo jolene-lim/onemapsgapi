@@ -1,22 +1,13 @@
 #' Get Planning Polygon for a Specific Point
 #'
 #' @description
-<<<<<<< Updated upstream
-#' This function is a wrapper for the \href{https://docs.onemap.sg/#planning-area-query}{Planning Area Query API}. It returns the spatial polygon data matching the specified location point, either in raw format, as an sf or sp object.
-=======
 #' This function is a wrapper for the \href{https://www.onemap.gov.sg/api/public/popapi/getPlanningarea}{Planning Area Query API}. It returns the spatial polygon data matching the specified location point, either in raw format or as an sf tibble.
->>>>>>> Stashed changes
 #'
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param lat Latitude of location point
 #' @param lon Longitude of location point
-<<<<<<< Updated upstream
-#' @param year Optional, check \href{https://docs.onemap.sg/#planning-area-query}{documentation} for valid options. Invalid requests will are ignored by the API.
-#' @param read Optional, defaults to \code{tibble}. Package to use to read geojson object. For "sf" objects, specify \code{read = "sf"} and for "sp" objects use \code{read = "rgdal"}.
-=======
 #' @param year Optional, check \href{https://www.onemap.gov.sg/docs/#planning-area-query}{documentation} for valid options. Invalid requests will are ignored by the API.
 #' @param return_spatial Optional, defaults to \code{FALSE}. If \code{TRUE}, result will be returned as a \code{sf} tibble, otherwise the raw JSON object will be returned.
->>>>>>> Stashed changes
 #'
 #' @return If the parameter \code{read} is not specified, the function returns a raw JSON object a list containing the planning area name and a geojson string representing the polygon. \cr \cr
 #' If \code{read = "sf"}, the function returns a 1 x 2 "sf" dataframe: "name" (name of planning area) and "geometry", which contains the simple feature. \cr \cr

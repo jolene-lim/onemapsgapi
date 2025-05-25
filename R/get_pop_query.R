@@ -1,11 +1,7 @@
 #' Get Population Data
 #'
 #' @description
-<<<<<<< Updated upstream
-#' This function is a wrapper for the \href{https://docs.onemap.sg/#population-query}{Population Query API}. It only allows for querying of one data type (i.e. one of the API endpoints) for a particular town and year.
-=======
 #' This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/populationquery}{Population Query API}. It only allows for querying of one data type (i.e. one of the API endpoints) for a particular town and year.
->>>>>>> Stashed changes
 #'
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param data_type Type of data to be retrieved, should correspond to one of the API endpoints. E.g. to get economic status data, \code{data_type = "getEconomicStatus"}. The API endpoints can be found on the documentation page.
@@ -48,72 +44,6 @@ get_pop_query <- function(token, data_type, planning_area, year, gender = NULL) 
   if ("message" %in% names(output)) {
     warning(str_c("The request returned an error message: ", output$message), " Status Code: ", resp_status(response))
     output <- NULL
-<<<<<<< Updated upstream
-    warning(paste("The request (", data_type , "/", planning_area, "/", year, "/", gender, ") ",
-                  "produced a ",
-                  status, " error", sep = ""))
-
-  } else {
-    output <- content(response)
-    # error check: invalid parameters
-    if ("error" %in% names(output)) {
-      warning("The request (", data_type , "/", planning_area, "/", year, "/", gender, ") ",
-              "produced an error: ",
-              output$error)
-      output <- NULL
-
-    } else if (class(output) == "character") {
-      warning("The request (", data_type , "/", planning_area, "/", year, "/", gender, ") ",
-              "produced an error: ",
-              output)
-      output <- NULL
-
-    # error check: no results
-    } else if ("Result" %in% names(output)) {
-      warning("The request (", data_type , "/", planning_area, "/", year, "/", gender, ") ",
-              "produced an error: ",
-              output$Result)
-      output <- NULL
-
-    # else return output
-    } else {
-      # replace NULLs with NA so tibble is of consistent length
-      output <- output %>%
-        map(function(i) map(i, function(j) ifelse(is.null(j), NA, j))) %>%
-
-      # bind rows and turn into tibble
-        reduce(bind_rows) %>% as_tibble()
-
-      # endpoints which allow gender parameter have different return behaviour when gender=NULL
-      # getPopulationAgeGroup returns total, male & female
-      # getEconomicStatus and getMaritalStatus returns only male & female
-      # getEthnicGroup only returns total and does not include the gender parameter
-      # this code block standardises output to include total, male & female
-
-      if (is.null(gender) & data_type %in% c("getEconomicStatus", "getMaritalStatus")) {
-        output <- output %>%
-          select(planning_area, year, gender, everything())
-        total <- colSums(output[ , -(1:3)], na.rm = FALSE) %>%
-          t() %>% as_tibble() %>%
-          mutate(planning_area = str_to_title(planning_area),
-                 year = as.integer(year),
-                 gender = "Total") %>%
-          select(planning_area, year, gender, everything())
-
-        output <- output %>%
-          bind_rows(total)
-
-      } else if (data_type == "getEthnicGroup" & is.null(gender)) {
-          output <- output %>%
-            mutate(gender = "Total") %>%
-            bind_rows(get_pop_query(token, data_type, planning_area, year, gender = "male")) %>%
-            bind_rows(get_pop_query(token, data_type, planning_area, year, gender = "female"))
-      } else if (! data_type %in% c("getEconomicStatus", "getEconomicStatus", "getEthnicGroup", "getPopulationAgeGroup")) {
-          output <- output %>%
-            mutate(gender = "Total")
-      }
-=======
->>>>>>> Stashed changes
   }
 
   # error check: invalid parameters

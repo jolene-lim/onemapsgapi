@@ -13,7 +13,7 @@ get_planning_polygon(token, lat, lon, year = NULL, return_spatial = FALSE)
 
 \item{lon}{Longitude of location point}
 
-\item{year}{Optional, check \href{https://docs.onemap.sg/#planning-area-query}{documentation} for valid options. Invalid requests will are ignored by the API.}
+\item{year}{Optional, check \href{https://www.onemap.gov.sg/docs/#planning-area-query}{documentation} for valid options. Invalid requests will are ignored by the API.}
 
 \item{return_spatial}{Optional, defaults to \code{FALSE}. If \code{TRUE}, result will be returned as a \code{sf} tibble, otherwise the raw JSON object will be returned.}
 }
@@ -23,11 +23,7 @@ If \code{read = "sf"}, the function returns a 1 x 2 "sf" dataframe: "name" (name
 If an error occurs, the function throws an error with the API error message and status code.
 }
 \description{
-<<<<<<< Updated upstream
-This function is a wrapper for the \href{https://docs.onemap.sg/#planning-area-query}{Planning Area Query API}. It returns the spatial polygon data matching the specified location point, either in raw format, as an sf or sp object.
-=======
 This function is a wrapper for the \href{https://www.onemap.gov.sg/api/public/popapi/getPlanningarea}{Planning Area Query API}. It returns the spatial polygon data matching the specified location point, either in raw format or as an sf tibble.
->>>>>>> Stashed changes
 }
 \note{
 If the user specifies a \code{return_spatial = TRUE} but does not have the \code{sf} package installed, the function will return the raw JSON and print a warning message.

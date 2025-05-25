@@ -1,13 +1,8 @@
 #' Get Population Data (Multiple)
 #'
 #' @description
-<<<<<<< Updated upstream
-#' This function is a wrapper for the \href{https://docs.onemap.sg/#population-query}{Population Query API}. It allows for querying of multiple Popquery data types for multiple towns and years.
-#'
-=======
 #' This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/populationquery}{Population Query API}. It allows for querying of multiple Popquery data types for multiple towns and years.
-#'x
->>>>>>> Stashed changes
+#'
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param data_types Type of data to be retrieved, should correspond to one of the API endpoints. E.g. to get economic status data, \code{data_type = "getEconomicStatus"}. The API endpoints can be found on the documentation page.
 #' @param planning_areas Town for which the data should be retrieved.

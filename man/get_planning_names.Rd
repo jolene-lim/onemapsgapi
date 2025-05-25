@@ -9,11 +9,7 @@ get_planning_names(token, year = NULL)
 \arguments{
 \item{token}{User's API token. This can be retrieved using \code{\link{get_token}}}
 
-<<<<<<< Updated upstream
-\item{year}{Optional, check \href{https://docs.onemap.sg/#names-of-planning-area}{documentation} for valid options. Invalid requests will are ignored by the API.}
-=======
 \item{year}{Optional, check \href{https://www.onemap.gov.sg/apidocs/planningarea/#namesofPlanningArea}{documentation} for valid options. Invalid requests will are ignored by the API.}
->>>>>>> Stashed changes
 }
 \value{
 A tibble with 2 columns:
@@ -23,11 +19,7 @@ A tibble with 2 columns:
 }
 }
 \description{
-<<<<<<< Updated upstream
-This function is a wrapper for the \href{https://docs.onemap.sg/#names-of-planning-area}{Names of Planning Area API}. It returns the data as a tibble.
-=======
 This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/planningarea/#namesofPlanningArea}{Names of Planning Area API}. It returns the data as a tibble.
->>>>>>> Stashed changes
 }
 \examples{
 # returns tibble

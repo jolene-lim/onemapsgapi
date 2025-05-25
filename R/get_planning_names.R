@@ -1,17 +1,10 @@
 #' Get Planning Area Names
 #'
 #' @description
-<<<<<<< Updated upstream
-#' This function is a wrapper for the \href{https://docs.onemap.sg/#names-of-planning-area}{Names of Planning Area API}. It returns the data as a tibble.
-#'
-#' @param token User's API token. This can be retrieved using \code{\link{get_token}}
-#' @param year Optional, check \href{https://docs.onemap.sg/#names-of-planning-area}{documentation} for valid options. Invalid requests will are ignored by the API.
-=======
 #' This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/planningarea/#namesofPlanningArea}{Names of Planning Area API}. It returns the data as a tibble.
 #'
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param year Optional, check \href{https://www.onemap.gov.sg/apidocs/planningarea/#namesofPlanningArea}{documentation} for valid options. Invalid requests will are ignored by the API.
->>>>>>> Stashed changes
 #'
 #' @return A tibble with 2 columns:
 #' \describe{

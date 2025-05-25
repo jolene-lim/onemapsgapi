@@ -26,11 +26,7 @@ library(dplyr)
 ```
 
 ## Authentication
-<<<<<<< Updated upstream
-This function is a wrapper for the [Authentication API endpoint](https://docs.onemap.sg/#authentication-service-post) In order to query data, most API endpoints in the OneMapSG API require a token. First-time users can register themselves using the [OneMapSG registration form](https://developers.onemap.sg/signup/). Subsequently, they can retrieve their tokens using the `get_token()` function with their email and password, for example:
-=======
 This function is a wrapper for the [Authentication API endpoint](https://www.onemap.gov.sg/apidocs/authentication) In order to query data, most API endpoints in the OneMapSG API require a token. First-time users can register themselves using the [OneMapSG registration form](https://www.onemap.gov.sg/apidocs/register/). Subsequently, they can retrieve their tokens using the `get_token()` function with their email and password, for example:
->>>>>>> Stashed changes
 
 ```{r, eval = FALSE}
 token <- get_token("user@example.com", "password")
@@ -43,11 +39,7 @@ token <- get_token(Sys.getenv("onemap_email"), Sys.getenv("onemap_pw"))
 The function will also print a message informing users of the token's expiry date and time.
 
 ## Themes
-<<<<<<< Updated upstream
-These functions are wrappers for the [Themes API](https://docs.onemap.sg/#themes) endpoints. Themes in the OneMap SG API refer to types of locations, such as kindergartens, parks, hawker centres etc.
-=======
 These functions are wrappers for the [Themes API](https://www.onemap.gov.sg/apidocs/themes) endpoints. Themes in the OneMap SG API refer to types of locations, such as kindergartens, parks, hawker centres etc.
->>>>>>> Stashed changes
 
 ### Check Theme Status
 The `get_theme_status()` function allows users to check if data associated with a theme has been updated after a certain time. It returns a named logical.
@@ -146,11 +138,7 @@ get_theme(token, "ura_parking_lot", "1.291789,%20103.7796402,1.3290461,%20103.87
 ```
 
 ## Planning Areas
-<<<<<<< Updated upstream
-These functions are a wrapper for the [Planning Area API](https://docs.onemap.sg/#planning-area). Planning Area API endpoints allow users to get spatial data and data related to the planning areas in Singapore. This package provides users with the ability to query the data and optionally handles necessary spatial data wrangling on behalf of the user.
-=======
 These functions are a wrapper for the [Planning Area API](https://www.onemap.gov.sg/apidocs/planningarea). Planning Area API endpoints allow users to get spatial data and data related to the planning areas in Singapore. This package provides users with the ability to query the data and optionally handles necessary spatial data wrangling on behalf of the user.
->>>>>>> Stashed changes
 
 ### Get Planning Areas
 The function `get_planning_areas()` allows users to query all the spatial polygons associated with Singapore's planning areas, for certain years. The function also optionally helps users transform raw geojson strings into `sf` objects.
@@ -170,7 +158,7 @@ If the parameter `return_spatial = TRUE`, any missing geojson objects will be dr
 get_planning_areas(token, return_spatial = TRUE)
 ```
 
-Note that if the user specifies a read method but does not have the corresponding package installed, the function will return the raw JSON and print a warning message.
+Note that if the user specifies to return_spatial but does not have the sf package installed, the function will return the raw JSON and print a warning message.
 
 If an error occurs, the function throws an error, along with the API error message and status code.
 ```{r, eval = NOT_CRAN, error = TRUE}
@@ -267,11 +255,7 @@ get_pop_queries(token, c("getEconomicStatus", "getOccupation"),
 Finally, to allow for faster computation, API calls can be called in parallel using `parallel = TRUE`. This is recommended for large requests.
 
 ## Route Service
-<<<<<<< Updated upstream
-These functions are a wrapper for the [Route Service API](https://docs.onemap.sg/#route). The Route Service API provides users a way to query the route taken from one point to another. It provides information about the total time and distance taken for the route, route instructions and other infomation e.g. elevation, for a variety of routes (public transport, drive, walk, cycle). This package provides three different functions associated with this API, each serving different purposes. 
-=======
 These functions are a wrapper for the [Route Service API](https://www.onemap.gov.sg/docs/#routing-service). The Route Service API provides users a way to query the route taken from one point to another. It provides information about the total time and distance taken for the route, route instructions and other infomation e.g. elevation, for a variety of routes (public transport, drive, walk, cycle). This package provides two different functions associated with this API, each serving different purposes. 
->>>>>>> Stashed changes
 
 ### Total time and distance matrix
 The function `get_summ_route()` returns the total time, distance and optionally the route geometry between two points. Users input a vector of start coordinates and a  vector of end coordinates. The function returns a tibble with `total_time`, `total_dist` and optionally `route_geometry`. 
