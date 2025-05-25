@@ -9,8 +9,8 @@ get_summ_route(
   start,
   end,
   route,
-  date = Sys.Date(),
-  time = format(Sys.time(), format = "\%T"),
+  date = format(Sys.Date(), "\%m-\%d-\%Y"),
+  time = format(Sys.time(), "\%T"),
   mode = NULL,
   max_dist = NULL,
   route_geom = FALSE
@@ -29,7 +29,7 @@ get_summ_route(
 
 \item{time}{Default = current time. Time for which route is requested.}
 
-\item{mode}{Required if \code{route = "pt"}. Accepted values are \code{transit}, \code{bus} or \code{rail}}
+\item{mode}{Required if \code{route = "pt"}. Accepted values are \code{TRANSIT}, \code{BUS} or \code{RAIL}}
 
 \item{max_dist}{Optional if \code{route = "pt"}. Maximum walking distance}
 
@@ -45,6 +45,29 @@ If no error occurs, a tibble of 1 x 2 with the variables:
 If an error occurs, the output will be \code{NA}, along with a warning message.
 }
 \description{
+<<<<<<< Updated upstream
 This function is a wrapper for the \href{https://docs.onemap.sg/#route}{Route Service API}. It is similar to \code{\link{get_route}}, except it returns a tibble with only total time and total distance, and also optionally, the start coordinates and end coordinates.
+=======
+This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/routing/}{Route Service API}. However, it only returns the total time, distance and optionally the route geometry between two points.
+>>>>>>> Stashed changes
 If \code{route = "pt"}, only the best route is chosen (i.e. \code{n_itineraries = 1}).
+}
+\examples{
+# returns output tibble
+\dontrun{get_summ_route(token, c(1.320981, 103.844150), c(1.326762, 103.8559), "drive")}
+\dontrun{get_summ_route(token, c(1.320981, 103.844150), c(1.326762, 103.8559), "pt",
+    mode = "bus", max_dist = 300)}
+
+# returns output sf dataframe
+\dontrun{get_summ_route(token, c(1.320981, 103.844150), c(1.326762, 103.8559),
+    "drive", route_geom = TRUE)}
+\dontrun{get_summ_route(token, c(1.320981, 103.844150), c(1.326762, 103.8559), "pt",
+    mode = "bus", max_dist = 300, route_geom = TRUE)}
+#'
+# error: output is NULL, warning message shows status code
+\dontrun{get_summ_route("invalid_token", c(1.320981, 103.844150), c(1.326762, 103.8559), "drive")}
+
+# error: output is NULL, warning message shows error message from request
+\dontrun{get_summ_route(token, c(300, 300), c(400, 500), "cycle")}
+\dontrun{get_summ_route(token, c(1.320981, 103.844150), c(1.326762, 103.8559), "fly")}
 }

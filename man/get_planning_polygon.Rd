@@ -4,7 +4,7 @@
 \alias{get_planning_polygon}
 \title{Get Planning Polygon for a Specific Point}
 \usage{
-get_planning_polygon(token, lat, lon, year = NULL, read = "tibble")
+get_planning_polygon(token, lat, lon, year = NULL, return_spatial = FALSE)
 }
 \arguments{
 \item{token}{User's API token. This can be retrieved using \code{\link{get_token}}}
@@ -15,19 +15,22 @@ get_planning_polygon(token, lat, lon, year = NULL, read = "tibble")
 
 \item{year}{Optional, check \href{https://docs.onemap.sg/#planning-area-query}{documentation} for valid options. Invalid requests will are ignored by the API.}
 
-\item{read}{Optional, defaults to \code{tibble}. Package to use to read geojson object. For "sf" objects, specify \code{read = "sf"} and for "sp" objects use \code{read = "rgdal"}.}
+\item{return_spatial}{Optional, defaults to \code{FALSE}. If \code{TRUE}, result will be returned as a \code{sf} tibble, otherwise the raw JSON object will be returned.}
 }
 \value{
 If the parameter \code{read} is not specified, the function returns a raw JSON object a list containing the planning area name and a geojson string representing the polygon. \cr \cr
 If \code{read = "sf"}, the function returns a 1 x 2 "sf" dataframe: "name" (name of planning area) and "geometry", which contains the simple feature. \cr \cr
-If \code{read = "rgdal"}, the function returns a SpatialPolygonsDataFrame of "sp" class. The names of the planning area is recorded in the "name" column of the dataframe. \cr \cr
-If an error occurs, the function returns NULL and a warning message is printed.
+If an error occurs, the function throws an error with the API error message and status code.
 }
 \description{
+<<<<<<< Updated upstream
 This function is a wrapper for the \href{https://docs.onemap.sg/#planning-area-query}{Planning Area Query API}. It returns the spatial polygon data matching the specified location point, either in raw format, as an sf or sp object.
+=======
+This function is a wrapper for the \href{https://www.onemap.gov.sg/api/public/popapi/getPlanningarea}{Planning Area Query API}. It returns the spatial polygon data matching the specified location point, either in raw format or as an sf tibble.
+>>>>>>> Stashed changes
 }
 \note{
-If the user specifies a \code{read} method but does not have the corresponding package installed, the function will return the raw JSON and print a warning message.
+If the user specifies a \code{return_spatial = TRUE} but does not have the \code{sf} package installed, the function will return the raw JSON and print a warning message.
 }
 \examples{
 # returns raw JSON object
@@ -35,12 +38,9 @@ If the user specifies a \code{read} method but does not have the corresponding p
 \dontrun{get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, year = 2008)}
 
 # returns dataframe of class "sf"
-\dontrun{get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, read = "sf")}
-
-# returns SpatialPolygonsDataFrame ("sp" object)
-\dontrun{get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, read = "rgdal")}
+\dontrun{get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, return_spatial = TRUE)}
 
 # error: output is NULL, warning message shows status code
-\dontrun{get_planning_polygon("invalid_token")}
+\dontrun{get_planning_polygon("invalid_token", lat = 1.429443081, lon = 103.835005)}
 \dontrun{get_planning_polygon(token, "invalidlat", "invalidlon")}
 }

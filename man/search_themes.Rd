@@ -4,14 +4,14 @@
 \alias{search_themes}
 \title{Search for Themes available on OneMap.Sg}
 \usage{
-search_themes(token, ..., more_info = TRUE)
+search_themes(token, ..., more_info = FALSE)
 }
 \arguments{
 \item{token}{User's API token. This can be retrieved using \code{\link{get_token}}}
 
 \item{...}{Optional Search terms to subset results; results with any of search terms will be returned. Search terms are not case-sensitive.}
 
-\item{more_info}{Whether more infomation should be queried, default = \code{TRUE}. If \code{FALSE}, output will contain Theme Name, Query Name and Icon information. If \code{TRUE}, output will additionally contain Category and Theme Owner information.}
+\item{more_info}{Whether more information should be queried, default = \code{FALSE}. If \code{FALSE}, output will contain Theme Name, Query Name and Icon information. If \code{TRUE}, output will additionally contain Category and Theme Owner information.}
 }
 \value{
 If no error occurs, a tibble with the following variables:
@@ -19,20 +19,26 @@ If no error occurs, a tibble with the following variables:
   \item{THEMENAME}{Name of the Theme}
   \item{QUERYNAME}{Query name of the Theme}
   \item{ICON}{Name of image file used as Icon in OneMap Web Map}
+  \item{EXPIRY_DATE}{Expiry Date of the Theme}
+  \item{PUBLISHED_DATE}{Published Date of the Theme}
   \item{CATEGORY}{Returned only if \code{more_info = TRUE}. Topic that Theme relates to, e.g. Health, Sports, Environment, etc.}
   \item{THEME_OWNER}{Returned only if \code{more_info = TRUE}. Government Agency who Owns the Dataset}
 }
 
-If an error occurs, the function returns \code{NULL}, along with a warning message.
+If an error occurs, the function throws an error with error message and status code.
 }
 \description{
+<<<<<<< Updated upstream
 This function is a wrapper for the \href{https://docs.onemap.sg/#get-all-themes-info}{Get All Themes Info API}. It allows users to get a tibble of all available themes, and their details, in the OneMap.Sg API. It also provides an additional functionality where users can subset their results using search terms.
+=======
+This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/themes/#getAllThemesInfo}{Get All Themes Info API}. It allows users to get a tibble of all available themes, and their details, in the OneMap.Sg API. It also provides an additional functionality where users can subset their results using search terms.
+>>>>>>> Stashed changes
 }
 \examples{
 # valid
 \dontrun{search_themes(token)}
 \dontrun{search_themes(token, "hdb", "parks")}
-\dontrun{search_themes(token, more_info = FALSE)}
+\dontrun{search_themes(token, more_info = TRUE)}
 
 # error
 \dontrun{search_themes("my_invalid_token")}

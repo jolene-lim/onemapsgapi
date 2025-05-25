@@ -1,8 +1,13 @@
 #' Get Population Data (Multiple)
 #'
 #' @description
+<<<<<<< Updated upstream
 #' This function is a wrapper for the \href{https://docs.onemap.sg/#population-query}{Population Query API}. It allows for querying of multiple Popquery data types for multiple towns and years.
 #'
+=======
+#' This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/populationquery}{Population Query API}. It allows for querying of multiple Popquery data types for multiple towns and years.
+#'x
+>>>>>>> Stashed changes
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param data_types Type of data to be retrieved, should correspond to one of the API endpoints. E.g. to get economic status data, \code{data_type = "getEconomicStatus"}. The API endpoints can be found on the documentation page.
 #' @param planning_areas Town for which the data should be retrieved.
@@ -16,7 +21,7 @@
 #'
 #' @examples
 #' # output with no NA
-#' \dontrun{get_pop_queries(token, c("getOccupation", "getLanguageLiterate"),
+#' \dontrun{get_pop_queries(token, c("getReligion", "getLanguageLiterate"),
 #'     c("Bedok", "Yishun"), "2010")}
 #' \dontrun{get_pop_queries(token, c("getEconomicStatus", "getEthnicGroup"),
 #'     "Yishun", "2010", "female")}
@@ -54,8 +59,6 @@ get_pop_queries <- function(token, data_types, planning_areas, years, gender = N
     # iterate parallel or sequentially through query params
     if (parallel) {
       query_outputs <- future_pmap(query_params, function(planning_areas, years) get_pop_query(token = token, data_type = i, planning_area = planning_areas, year = years, gender = gender))
-      plan(sequential)
-
     } else {
 
       query_outputs <- pmap(query_params, function(planning_areas, years) get_pop_query(token = token, data_type = i, planning_area = planning_areas, year = years, gender = gender))
@@ -73,7 +76,7 @@ get_pop_queries <- function(token, data_types, planning_areas, years, gender = N
     warning("Your request produced 0 outputs! Please check your query and refer to documentation for valid parameters.")
 
   } else {
-    output <- output_list %>%
+    output <- output_list |>
       reduce(full_join, by = c("planning_area", "year", "gender"))
   }
 

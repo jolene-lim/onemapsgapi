@@ -22,19 +22,23 @@ get_theme_status(
 }
 \value{
 A named logical indicating if the theme is updated at a specific date.
-If an error occurred, the function returns \code{NULL} along with a warning message.
+If an error occurred, the function throws an error with the status code and API's error message.
 }
 \description{
+<<<<<<< Updated upstream
 This function is a wrapper for the \href{https://docs.onemap.sg/#check-theme-status}{Check Theme Status API}. It returns a named logical indicating if the theme is updated at a specific date.
+=======
+This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/themes/#checkThemeStatus}{Check Theme Status API}. It returns a named logical indicating if the theme is updated at a specific date.
+>>>>>>> Stashed changes
 }
 \examples{
 # returns named logical
 \dontrun{get_theme_status(token, "kindergartens")}
 \dontrun{get_theme_status(token, "2020-01-01", "12:00:00", "hotels")}
 
-# returns NULL, warning message shows status code
+# throws an error with error message and status code
 \dontrun{get_theme_status("invalid_token", "blood_bank")}
 
-# returns NULL, warning message shows error
+# throws an error with error message and status code
 \dontrun{get_theme_status(token, "invalid_theme")}
 }

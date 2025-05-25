@@ -63,7 +63,7 @@
 #'     routes = c("cycle", "walk"))}
 
 
-get_travel <- function(token, df, origin_lat, origin_lon, destination_lat, destination_lon, routes, date = Sys.Date(), time = format(Sys.time(), format = "%T"), pt_mode = "TRANSIT", pt_max_dist = NULL, as_wide = TRUE, parallel = FALSE, route_geom = FALSE) {
+get_travel <- function(token, df, origin_lat, origin_lon, destination_lat, destination_lon, routes, date = format(Sys.Date(), "%m-%d-%Y"), time = format(Sys.time(), format = "%T"), pt_mode = "TRANSIT", pt_max_dist = NULL, as_wide = TRUE, parallel = FALSE, route_geom = FALSE) {
 
   # ensure route_geom is returned only if long output
   route_geom <- ifelse(as_wide, FALSE, route_geom)
@@ -79,7 +79,9 @@ get_travel <- function(token, df, origin_lat, origin_lon, destination_lat, desti
   names(output_list) <- as.character(routes)
 
   # subset variables used to query API
-  var_df <- select(df, olat = origin_lat, olon = origin_lon, dlat = destination_lat, dlon = destination_lon)
+  var_df <- df |>
+    select(origin_lat, origin_lon, destination_lat, destination_lon) |>
+    rename(olat = origin_lat, olon = origin_lon, dlat = destination_lat, dlon = destination_lon)
 
   # set up parallel option if requested
   if (parallel) {

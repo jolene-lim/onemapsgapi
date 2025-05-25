@@ -26,7 +26,11 @@ library(dplyr)
 ```
 
 ## Authentication
+<<<<<<< Updated upstream
 This function is a wrapper for the [Authentication API endpoint](https://docs.onemap.sg/#authentication-service-post) In order to query data, most API endpoints in the OneMapSG API require a token. First-time users can register themselves using the [OneMapSG registration form](https://developers.onemap.sg/signup/). Subsequently, they can retrieve their tokens using the `get_token()` function with their email and password, for example:
+=======
+This function is a wrapper for the [Authentication API endpoint](https://www.onemap.gov.sg/apidocs/authentication) In order to query data, most API endpoints in the OneMapSG API require a token. First-time users can register themselves using the [OneMapSG registration form](https://www.onemap.gov.sg/apidocs/register/). Subsequently, they can retrieve their tokens using the `get_token()` function with their email and password, for example:
+>>>>>>> Stashed changes
 
 ```{r, eval = FALSE}
 token <- get_token("user@example.com", "password")
@@ -39,7 +43,11 @@ token <- get_token(Sys.getenv("onemap_email"), Sys.getenv("onemap_pw"))
 The function will also print a message informing users of the token's expiry date and time.
 
 ## Themes
+<<<<<<< Updated upstream
 These functions are wrappers for the [Themes API](https://docs.onemap.sg/#themes) endpoints. Themes in the OneMap SG API refer to types of locations, such as kindergartens, parks, hawker centres etc.
+=======
+These functions are wrappers for the [Themes API](https://www.onemap.gov.sg/apidocs/themes) endpoints. Themes in the OneMap SG API refer to types of locations, such as kindergartens, parks, hawker centres etc.
+>>>>>>> Stashed changes
 
 ### Check Theme Status
 The `get_theme_status()` function allows users to check if data associated with a theme has been updated after a certain time. It returns a named logical.
@@ -50,13 +58,13 @@ get_theme_status(token, "kindergartens")
 get_theme_status(token, "hotels", "2020-01-01", "12:00:00")
 ```
 
-```{r, eval = NOT_CRAN}
-# returns NULL, warning message shows status code
+```{r, eval = NOT_CRAN, error = TRUE}
+# throws an error, along with the API error message and status code
 get_theme_status("invalid_token", "blood_bank")
 ```
 
-```{r, eval = NOT_CRAN}
-# returns NULL, warning message shows error
+```{r, eval = NOT_CRAN, error = TRUE}
+# throws an error, along with the API error message and status code
 get_theme_status(token, "invalid_theme")
 ```
 
@@ -68,14 +76,14 @@ The `get_theme_info()` function allows users to get information related to a spe
 get_theme_status(token, "kindergartens")
 ```
 
-If an error occurs, the function returns `NULL`, along with a warning message.
-```{r, eval = NOT_CRAN}
-# returns NULL, warning message shows status code
+If an error occurs, the function throws an error, along with the API error message and status code.
+```{r, eval = NOT_CRAN, error = TRUE}
+# throws an error, along with the API error message and status code
 get_theme_status("invalid_token", "blood_bank")
 ```
 
-```{r, eval = NOT_CRAN}
-# returns NULL, warning message shows error
+```{r, eval = NOT_CRAN, error = TRUE}
+# throws an error, along with the API error message and status code
 get_theme_status(token, "invalid_theme")
 ```
 
@@ -97,8 +105,8 @@ search_themes(token)
 search_themes(token, more_info = FALSE)
 ```
 
-If an error occurs, the function returns `NULL`, along with a warning message.
-```{r, eval = NOT_CRAN}
+If an error occurs, the function throws an error, along with the API error message and status code.
+```{r, eval = NOT_CRAN, error = TRUE}
 search_themes("my_invalid_token")
 ```
 
@@ -117,20 +125,20 @@ get_theme(token, "monuments", extents = "1.291789,%20103.7796402,1.3290461,%2010
 
 ```{r, eval = NOT_CRAN}
 # return all monuments data as a sf dataframe
-get_theme(token, "monuments", read = "sf")
+get_theme(token, "monuments", return_spatial = TRUE)
 ```
 
 ```{r, eval = NOT_CRAN}
 # returns a list of status tibble and output tibble
-get_theme(token, "funeralparlours", return_info = TRUE) %>%
+get_theme(token, "funeralparlours", return_info = TRUE) |>
   str()
 ```
 
-```{r, eval = NOT_CRAN}
-# error: output is NULL, warning message shows status code
+```{r, eval = FALSE}
+# error: throws an error, along with the API error message and status code
 get_theme("invalid_token", "hotels")
 
-# error: output is NULL, warning message shows error message from request
+# error: throws an error, along with the API error message and status code
 get_theme(token, "non-existent-theme")
 
 # error: output is query_info, warning message query did not return any records
@@ -138,12 +146,16 @@ get_theme(token, "ura_parking_lot", "1.291789,%20103.7796402,1.3290461,%20103.87
 ```
 
 ## Planning Areas
+<<<<<<< Updated upstream
 These functions are a wrapper for the [Planning Area API](https://docs.onemap.sg/#planning-area). Planning Area API endpoints allow users to get spatial data and data related to the planning areas in Singapore. This package provides users with the ability to query the data and optionally handles necessary spatial data wrangling on behalf of the user.
+=======
+These functions are a wrapper for the [Planning Area API](https://www.onemap.gov.sg/apidocs/planningarea). Planning Area API endpoints allow users to get spatial data and data related to the planning areas in Singapore. This package provides users with the ability to query the data and optionally handles necessary spatial data wrangling on behalf of the user.
+>>>>>>> Stashed changes
 
 ### Get Planning Areas
-The function `get_planning_areas()` allows users to query all the spatial polygons associated with Singapore's planning areas, for certain years. The function also optionally helps users transform raw geojson strings into `sf` or `sp` objects.
+The function `get_planning_areas()` allows users to query all the spatial polygons associated with Singapore's planning areas, for certain years. The function also optionally helps users transform raw geojson strings into `sf` objects.
 
-If the parameter read is not specified, the function returns a raw JSON object with planning names and geojson string vectors. 
+If the parameter `return_spatial = FALSE`, the function returns a raw JSON object with planning names and geojson string vectors. 
 
 ```{r, eval = NOT_CRAN}
 # returns raw JSON object
@@ -151,24 +163,17 @@ get_planning_areas(token)
 get_planning_areas(token, 2008)
 ```
 
-If read is specified, any missing geojson objects will be dropped (this affects the "Others" planning area returned by the API). The returned outputs are NOT projected. 
+If the parameter `return_spatial = TRUE`, any missing geojson objects will be dropped (this affects the "Others" planning area returned by the API). The returned outputs are NOT projected. 
 
-If read = "sf", the function returns a single "sf" dataframe with 2 columns: "name" (name of planning area) and "geometry", which contains the simple features. 
 ```{r, eval = FALSE}
 # returns dataframe of class "sf"
-get_planning_areas(token, read = "sf")
-```
-
-If read = "rgdal", the function returns a SpatialPolygonsDataFrame of "sp" class with 2 columns: "name" (name of planning area) and "geometry".
-```{r, eval = FALSE}
-# returns SpatialPolygonsDataFrame ("sp" object)
-get_planning_areas(token, read = "rgdal")
+get_planning_areas(token, return_spatial = TRUE)
 ```
 
 Note that if the user specifies a read method but does not have the corresponding package installed, the function will return the raw JSON and print a warning message.
 
-If an error occurs, the function returns NULL and a warning message is printed.
-```{r, eval = NOT_CRAN}
+If an error occurs, the function throws an error, along with the API error message and status code.
+```{r, eval = NOT_CRAN, error = TRUE}
 # error: output is NULL, warning message shows status code
 get_planning_areas("invalid_token")
 ```
@@ -182,16 +187,16 @@ get_planning_names(token)
 get_planning_names(token, 2008)
 ```
 
-If an error occurs, the function returns NULL and a warning message is printed.
-```{r, eval = NOT_CRAN}
-# error: output is NULL, warning message shows status code
+If an error occurs, the function throws an error, along with the API error message and status code.
+```{r, eval = NOT_CRAN, error = TRUE}
+# error: throws an error, along with the API error message and status code
 get_planning_names("invalid_token")
 ```
 
 ### Get Planning Area Polygon
-The function `get_planning_polygon()` allows users to query a particular planning area polygon containing the specified location point. The function also optionally helps users transform raw geojson string output into `sf` or `sp` objects.
+The function `get_planning_polygon()` allows users to query a particular planning area polygon containing the specified location point. The function also optionally helps users transform raw geojson string output into an `sf` object.
 
-If the parameter read is not specified, the function returns a raw JSON object a list containing the planning area name and a geojson string representing the polygon. 
+If the parameter `return_spatial = FALSE`, the function returns a raw JSON object with planning names and geojson string vectors. 
 
 ```{r, eval = NOT_CRAN}
 # returns raw JSON object
@@ -199,25 +204,19 @@ get_planning_polygon(token, lat = 1.429443081, lon = 103.835005)
 get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, year = 2008)
 ```
 
-If read = "sf", the function returns a 1 x 2 "sf" dataframe: "name" (name of planning area) and "geometry", which contains the simple feature. 
+If the parameter `return_spatial = TRUE`, any missing geojson objects will be dropped (this affects the "Others" planning area returned by the API). The returned outputs are NOT projected. 
 ```{r, eval = NOT_CRAN}
 # returns dataframe of class "sf"
-get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, read = "sf")
-```
-
-If read = "rgdal", the function returns a SpatialPolygonsDataFrame of "sp" class. The names of the planning area is recorded in the "name" column of the dataframe. If an error occurs, the function returns NULL and a warning message is printed.
-```{r, eval = NOT_CRAN}
-# returns SpatialPolygonsDataFrame ("sp" object)
-get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, read = "rgdal")
+get_planning_polygon(token, lat = 1.429443081, lon = 103.835005, return_spatial = TRUE)
 ```
 
 Note that if the user specifies a read method but does not have the corresponding package installed, the function will return the raw JSON and print a warning message.
 
-If an error occurs, the function returns NULL and a warning message is printed.
-```{r, eval = FALSE}
+If an error occurs, the function throws an error, along with the API error message and status code.
+```{r, eval = FALSE, error = TRUE}
 # error & will not run: missing lat and lon arguments
 get_planning_polygon("invalid_token")
-# error: output is NULL, warning message shows status code
+# error: throws an error, along with the API error message and status code
 get_planning_polygon(token, "invalidlat", "invalidlon")
 ```
 
@@ -235,7 +234,7 @@ The function returns a tibble with each row representing a town in a particular 
 
 ```{r, eval = NOT_CRAN}
 # example: returns output with no NA
-get_pop_queries(token, c("getOccupation", "getLanguageLiterate"), 
+get_pop_queries(token, c("getReligion", "getLanguageLiterate"), 
                 c("Bedok", "Yishun"), "2010")
 
 # example: returns output with no NA and gender field
@@ -268,41 +267,34 @@ get_pop_queries(token, c("getEconomicStatus", "getOccupation"),
 Finally, to allow for faster computation, API calls can be called in parallel using `parallel = TRUE`. This is recommended for large requests.
 
 ## Route Service
+<<<<<<< Updated upstream
 These functions are a wrapper for the [Route Service API](https://docs.onemap.sg/#route). The Route Service API provides users a way to query the route taken from one point to another. It provides information about the total time and distance taken for the route, route instructions and other infomation e.g. elevation, for a variety of routes (public transport, drive, walk, cycle). This package provides three different functions associated with this API, each serving different purposes. 
+=======
+These functions are a wrapper for the [Route Service API](https://www.onemap.gov.sg/docs/#routing-service). The Route Service API provides users a way to query the route taken from one point to another. It provides information about the total time and distance taken for the route, route instructions and other infomation e.g. elevation, for a variety of routes (public transport, drive, walk, cycle). This package provides two different functions associated with this API, each serving different purposes. 
+>>>>>>> Stashed changes
 
-### All Route Information
-The `get_route()` function returns all API output but with standardized column names, which allows for subsequent merging if desired. This is particularly useful as API output variable names may vary depending on parameters (e.g. start point is named differently between `route = drive` and `route = pt`).
-
-It returns the full route data in a tibble format, or a list containing a tibble of results and list of status information if desired.
+### Total time and distance matrix
+The function `get_summ_route()` returns the total time, distance and optionally the route geometry between two points. Users input a vector of start coordinates and a  vector of end coordinates. The function returns a tibble with `total_time`, `total_dist` and optionally `route_geometry`. 
 
 ```{r, eval = NOT_CRAN}
-# example: only route data, route = drive
-get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")
+# example: return driving distance and time between two points
+get_summ_route(token, c(1.320981, 103.844150), c(1.326762, 103.8559), "drive")
 ```
 
 ```{r, eval = NOT_CRAN}
-# example: only route data, route = pt
-get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "pt",
-          mode = "bus", max_dist = 300)
+# example: return public transport distance and time between two points, with route geometry
+get_summ_route(token, c(1.320981, 103.844150), c(1.326762, 103.8559),
+     "drive", route_geom = TRUE)
 ```
 
+If an error occurs, the function returns `NULL`, along with the API error message and status code.
 ```{r, eval = NOT_CRAN}
-# example: returns list of status list and output tibble
-get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), 
-          "drive", status_info = TRUE) %>%
-  str()
-```
+# example: returns NULL
+get_summ_route("invalid_token", c(1.320981, 103.844150), c(1.326762, 103.8559), "drive")
 
-By default, the API returns route geometry in an encoded format. To return results in a decoded `sf` format, set the parameter `decode = TRUE`.
-```{r, eval = NOT_CRAN}
-# example: returns sf dataframe with decoded route geometry
-get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive", decode = TRUE)
-get_route(token, c(1.319728, 103.8421), c(1.319728905, 103.8421581), "pt", mode = "bus", max_dist = 300, n_itineraries = 2, decode = TRUE)
-```
+get_summ_route(token, c(300, 300), c(400, 500), "cycle")
 
-```{r, eval = NOT_CRAN}
-# example: error, warning message shows status code
-get_route("invalid_token", c(1.319728, 103.8421), c(1.319728905, 103.8421581), "drive")
+get_summ_route(token, c(1.320981, 103.844150), c(1.326762, 103.8559), "fly")
 ```
 
 ### Total time and distance matrix

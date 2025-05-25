@@ -1,10 +1,17 @@
 #' Get Planning Area Names
 #'
 #' @description
+<<<<<<< Updated upstream
 #' This function is a wrapper for the \href{https://docs.onemap.sg/#names-of-planning-area}{Names of Planning Area API}. It returns the data as a tibble.
 #'
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param year Optional, check \href{https://docs.onemap.sg/#names-of-planning-area}{documentation} for valid options. Invalid requests will are ignored by the API.
+=======
+#' This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/planningarea/#namesofPlanningArea}{Names of Planning Area API}. It returns the data as a tibble.
+#'
+#' @param token User's API token. This can be retrieved using \code{\link{get_token}}
+#' @param year Optional, check \href{https://www.onemap.gov.sg/apidocs/planningarea/#namesofPlanningArea}{documentation} for valid options. Invalid requests will are ignored by the API.
+>>>>>>> Stashed changes
 #'
 #' @return A tibble with 2 columns:
 #' \describe{
@@ -24,35 +31,25 @@
 get_planning_names <- function(token, year = NULL) {
 
   # query API
-  url <- "https://developers.onemap.sg/privateapi/popapi/getPlanningareaNames"
-  query <- paste(url, "?",
-                 "token=", token,
-                 sep = "")
-  if (!is.null(year)) {
-    query <- paste(query,
-                   "&year=", year,
-                   sep = "")
-  }
+  url <- "https://www.onemap.gov.sg/api/public/popapi/getPlanningareaNames"
 
-  response <- GET(query)
+  req <- request(url) |>
+    req_url_query(year = year) |>
+    req_auth_bearer_token(token) |>
+    req_error(is_error= \(resp) FALSE)
+
+  response <- req_perform(req)
+  output <- resp_body_json(response)
 
   # error handling
-  if (http_error(response)) {
-    status <- status_code(response)
-    output <- NULL
-    warning(paste("The request produced a", status, "error", sep = " "))
-    return(output)
-
-  } else {
-    output <- content(response)
-
+  if ("message" %in% names(output)) {
+    stop(str_c("The request returned an error message: ", output$message), " Status Code: ", resp_status(response))
   }
 
-    # convert JSON to dataframe
-    output <- output %>%
-      reduce(bind_rows)
+  # convert JSON to dataframe
+  output <- output %>%
+    reduce(bind_rows)
 
-    return(output)
+  return(output)
+
 }
-
-

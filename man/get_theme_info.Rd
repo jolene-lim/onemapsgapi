@@ -13,18 +13,22 @@ get_theme_info(token, theme)
 }
 \value{
 A named character vector of Theme Name and Query Name.
-If an error occurred, the function returns \code{NULL} along with a warning message.
+If an error occurred, the function throws an error with the status code and API's error message.
 }
 \description{
+<<<<<<< Updated upstream
 This function is a wrapper for the \href{https://docs.onemap.sg/#get-theme-info}{Get Theme Info API}. It returns a named character vector of Theme Name and Query Name.
+=======
+This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/themes/#getThemesInfo}{Get Theme Info API}. It returns a named character vector of Theme Name and Query Name.
+>>>>>>> Stashed changes
 }
 \examples{
 # returns named character vector
-\dontrun{get_theme_status(token, "kindergartens")}
+\dontrun{get_theme_info(token, "kindergartens")}
 
-# returns NULL, warning message shows status code
-\dontrun{get_theme_status("invalid_token", "blood_bank")}
+# throws an error with error message and status code
+\dontrun{get_theme_info(token, "invalid_theme")}
 
-# returns NULL, warning message shows error
-\dontrun{get_theme_status(token, "invalid_theme")}
+# throws an error with error message and status code
+\dontrun{get_theme_info("invalid_token", "blood_bank")}
 }

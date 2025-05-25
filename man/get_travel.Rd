@@ -12,7 +12,7 @@ get_travel(
   destination_lat,
   destination_lon,
   routes,
-  date = Sys.Date(),
+  date = format(Sys.Date(), "\%m-\%d-\%Y"),
   time = format(Sys.time(), format = "\%T"),
   pt_mode = "TRANSIT",
   pt_max_dist = NULL,

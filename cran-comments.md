@@ -1,3 +1,7 @@
+## Resubmission 2025
+* This package was removed from CRAN-R in 2024. This package is an API wrapper and changes in the original API had caused various errors.
+* The package has been updated to be compatible with the latest API.
+
 ## 2nd Resubmission
 * Updated year in License from 2019 to 2020  
 * Removed examples for unexported functions  
