@@ -25,6 +25,20 @@ library(onemapsgapi)
 library(dplyr)
 ```
 
+## Search/ Geocode
+This function is a wrapper for the [Search API](https://www.onemap.gov.sg/apidocs/search). It allows input of a dataframe of place names and output of the original dataframe with additional columns, including spatial coordinates and address information. Users can also optionally return the output an `sf` dataframe. If an error occurs, the result for that row will be empty and a warning message with the API error and status code will be printed.
+
+Please note that only the top result returned by the API will be included.
+```{r, eval = NOT_CRAN}
+df <- tibble(
+   places = c("a", "b", "c", "d"),
+   address = c("raffles place mrt", "suntec city", "nus", "100353")
+   )
+
+geocode_onemap(df, "address",
+   return_geom=TRUE, address_details = TRUE, return_spatial = TRUE)
+```
+
 ## Authentication
 This function is a wrapper for the [Authentication API endpoint](https://www.onemap.gov.sg/apidocs/authentication) In order to query data, most API endpoints in the OneMapSG API require a token. First-time users can register themselves using the [OneMapSG registration form](https://www.onemap.gov.sg/apidocs/register/). Subsequently, they can retrieve their tokens using the `get_token()` function with their email and password, for example:
 
@@ -32,7 +46,7 @@ This function is a wrapper for the [Authentication API endpoint](https://www.one
 token <- get_token("user@example.com", "password")
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval = NOT_CRAN}
 token <- get_token(Sys.getenv("onemap_email"), Sys.getenv("onemap_pw"))
 ```
 

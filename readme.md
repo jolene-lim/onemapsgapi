@@ -33,7 +33,8 @@ Currently, the following API endpoints are supported:
 
 | API | Coverage | Supported Endpoints |
 | --- | --- | --- |
-| **Post** | :white_check_mark: Full | [getToken](https://www.onemap.gov.sg/apidocs/authentication) |
+| **Authentication** | :white_check_mark: Full | [getToken](https://www.onemap.gov.sg/apidocs/authentication) |
+| **Search** | :white_check_mark: Full | [search](https://www.onemap.gov.sg/apidocs/search) |
 | **Themes** | :white_check_mark: Full | [checkThemeStatus](https://www.onemap.gov.sg/apidocs/themes/#checkThemeStatus), [getThemesInfo](https://www.onemap.gov.sg/apidocs/themes/#getThemesInfo), [getAllThemesInfo](https://www.onemap.gov.sg/apidocs/themes/#getAllThemesInfo), [retrieveTheme](https://www.onemap.gov.sg/apidocs/themes/#retrieveTheme)
 | **Planning Area** | :white_check_mark: Full | [getPlanningarea](https://www.onemap.gov.sg/apidocs/planningarea/#planningAreaQuery), [getPlanningareaNames](https://www.onemap.gov.sg/apidocs/planningarea/#namesofPlanningArea), [getPlanningarea](https://www.onemap.gov.sg/apidocs/planningarea/#planningAreaQuery)
 | **Population Query** | :white_check_mark: Full | Check [Population Query Docs](https://www.onemap.gov.sg/apidocs/populationquery) for the full list of endpoints. All endpoints are supported in this package.
@@ -48,6 +49,14 @@ token <- get_token("user@email.com",  "password")
 ```
 
 The function will also print a message informing users of the token's expiry date and time.
+
+### Search
+This can be used to geocode data. Users inputs a dataframe with a column of information (e.g. postal codes, names of places of interest). The function returns an enriched dataframe with coordinates and/ or address information. Users also have the option to return the data as an `sf` dataframe. The option for parallel processing is available for large datasets.
+```{r}
+# example: returns a sf dataframe with coordinates and address details
+geocode_onemap(df, "address",
+   return_geom=TRUE, address_details = TRUE, return_spatial = TRUE)
+```
 
 ### Themes
 Themes in the OneMap SG API refer to types of locations, such as kindergartens, parks, hawker centres etc. This package provides functions related to querying themes:

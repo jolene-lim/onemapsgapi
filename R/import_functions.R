@@ -5,6 +5,6 @@
 #' @importFrom tidyr %>% unite spread separate crossing
 #' @importFrom purrr map pmap map_chr map_int map_dbl map_lgl reduce flatten
 #' @importFrom future plan multicore multisession sequential
-#' @importFrom furrr future_pmap
+#' @importFrom furrr future_map future_pmap
 
 NULL
