@@ -9,7 +9,7 @@ The OneMapSGAPI package provides useful wrappers for the [OneMapSG API](https://
 
 :tada: **Version 2.0.0 is now available!** Version update is now compatible with the changes to the OneMapSG API released in late-2023.
 
-The OneMapSg API package is **pending publication on CRAN-R**! :tada: :confetti_ball:
+The OneMapSg API package is **published on CRAN-R**! :tada: :confetti_ball:
 To download the release version, run:
 ```{r}
 install.packages("onemapsgapi")
