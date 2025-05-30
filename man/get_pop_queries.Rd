@@ -31,11 +31,11 @@ A tibble with each row representing a town in a particular year for a particular
 If any API call returns no data, the values will be NA but the row will be returned. However, if all data_types do not return data for that town and year, no row will be returned for it.
 }
 \description{
-This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#population-query}{Population Query API}. It allows for querying of multiple Popquery data types for multiple towns and years.
+This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/populationquery}{Population Query API}. It allows for querying of multiple Popquery data types for multiple towns and years.
 }
 \examples{
 # output with no NA
-\dontrun{get_pop_queries(token, c("getOccupation", "getLanguageLiterate"),
+\dontrun{get_pop_queries(token, c("getReligion", "getLanguageLiterate"),
     c("Bedok", "Yishun"), "2010")}
 \dontrun{get_pop_queries(token, c("getEconomicStatus", "getEthnicGroup"),
     "Yishun", "2010", "female")}

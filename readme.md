@@ -7,9 +7,9 @@
 ### Introduction
 The OneMapSGAPI package provides useful wrappers for the [OneMapSG API](https://www.onemap.gov.sg/docs/#introduction) client. It allows users to easily query spatial data from the API in a tidy format and provides additional functionalities to allow easy data manipulation. 
 
-:tada: **Version 1.1.0 is now available!** Version update features greater options to return results in spatial formats, including features to return decoded route geometry for spatial analysis and visualisation.
+:tada: **Version 2.0.0 is now available!** Version update is now compatible with the changes to the OneMapSG API released in late-2023.
 
-The OneMapSg API package is now **available on CRAN-R**! :tada: :confetti_ball:
+The OneMapSg API package is **pending publication on CRAN-R**! :tada: :confetti_ball:
 To download the release version, run:
 ```{r}
 install.packages("onemapsgapi")
@@ -33,11 +33,20 @@ Currently, the following API endpoints are supported:
 
 | API | Coverage | Supported Endpoints |
 | --- | --- | --- |
+<<<<<<< HEAD
 | **Post** | :white_check_mark: Full | [getToken](https://www.onemap.gov.sg/docs/#authentication-service-post) |
 | **Themes** | :white_check_mark: Full | [checkThemeStatus](https://www.onemap.gov.sg/docs/#check-theme-status), [getThemeInfo](https://www.onemap.gov.sg/docs/#get-theme-info), [getAllThemesInfo](https://www.onemap.gov.sg/docs/#get-all-themes-info), [retrieveTheme](https://www.onemap.gov.sg/docs/#retrieve-theme)
 | **Planning Area** | :white_check_mark: Full | [getAllPlanningarea](https://www.onemap.gov.sg/docs/#planning-area-polygons), [getPlanningareaNames](https://www.onemap.gov.sg/docs/#names-of-planning-area), [getPlanningarea](https://www.onemap.gov.sg/docs/#planning-area-query)
 | **Population Query** | :white_check_mark: Full | [getEconomicStatus](https://www.onemap.gov.sg/docs/#economic-status-data), [getEducationAttending](https://www.onemap.gov.sg/docs/#education-status-data), [getEthnicGroup](https://www.onemap.gov.sg/docs/#ethnic-distribution-data), [getHouseholdMonthlyIncomeWork](https://www.onemap.gov.sg/docs/#work-income-for-household-monthly), [getHouseholdSize](https://www.onemap.gov.sg/docs/#household-size-data), [getHouseholdStructure](https://www.onemap.gov.sg/docs/#household-structure-data), [getIncomeFromWork](https://www.onemap.gov.sg/docs/#income-from-work-data), [getIndustry](https://www.onemap.gov.sg/docs/#industry-of-population-data), [getLanguageLiterate](https://www.onemap.gov.sg/docs/#language-literacy-data), [getMaritalStatus](https://www.onemap.gov.sg/docs/#marital-status-data), [getModeOfTransportSchool](https://www.onemap.gov.sg/docs/#mode-of-transports-to-school-data), [getModeOfTransportWork](https://www.onemap.gov.sg/docs/#mode-of-transport-to-work-data), [getOccupation](https://www.onemap.gov.sg/docs/#occupation-data), [getPopulationAgeGroup](https://www.onemap.gov.sg/docs/#age-data), [getReligion](https://www.onemap.gov.sg/docs/#religion-data), [getSpokenAtHome](https://www.onemap.gov.sg/docs/#spoken-language-data), [getTenancy](https://www.onemap.gov.sg/docs/#tenancy-data), [getTypeOfDwellingHousehold](https://www.onemap.gov.sg/docs/#tenancy-data), [getTypeOfDwellingPop](https://www.onemap.gov.sg/docs/#dwelling-type-population-data)
 | **Routing Service** | :white_check_mark: Full | [route](https://www.onemap.gov.sg/docs/#routing-service)<br> **Note**: [Route Decoder](https://docs.onemap.sg/#routing-service) V1.1.0 features internal decoding capabilities via the `googlePolylines` package
+=======
+| **Authentication** | :white_check_mark: Full | [getToken](https://www.onemap.gov.sg/apidocs/authentication) |
+| **Search** | :white_check_mark: Full | [search](https://www.onemap.gov.sg/apidocs/search) |
+| **Themes** | :white_check_mark: Full | [checkThemeStatus](https://www.onemap.gov.sg/apidocs/themes/#checkThemeStatus), [getThemesInfo](https://www.onemap.gov.sg/apidocs/themes/#getThemesInfo), [getAllThemesInfo](https://www.onemap.gov.sg/apidocs/themes/#getAllThemesInfo), [retrieveTheme](https://www.onemap.gov.sg/apidocs/themes/#retrieveTheme)
+| **Planning Area** | :white_check_mark: Full | [getPlanningarea](https://www.onemap.gov.sg/apidocs/planningarea/#planningAreaQuery), [getPlanningareaNames](https://www.onemap.gov.sg/apidocs/planningarea/#namesofPlanningArea), [getPlanningarea](https://www.onemap.gov.sg/apidocs/planningarea/#planningAreaQuery)
+| **Population Query** | :white_check_mark: Full | Check [Population Query Docs](https://www.onemap.gov.sg/apidocs/populationquery) for the full list of endpoints. All endpoints are supported in this package.
+| **Routing Service** | :white_check_mark: Full | [route](https://www.onemap.gov.sg/apidocs/routing/)
+>>>>>>> dev
 
 ## Usage
 ### Authentication
@@ -48,6 +57,14 @@ token <- get_token("user@email.com",  "password")
 ```
 
 The function will also print a message informing users of the token's expiry date and time.
+
+### Search
+This can be used to geocode data. Users inputs a dataframe with a column of information (e.g. postal codes, names of places of interest). The function returns an enriched dataframe with coordinates and/ or address information. Users also have the option to return the data as an `sf` dataframe. The option for parallel processing is available for large datasets.
+```{r}
+# example: returns a sf dataframe with coordinates and address details
+geocode_onemap(df, "address",
+   return_geom=TRUE, address_details = TRUE, return_spatial = TRUE)
+```
 
 ### Themes
 Themes in the OneMap SG API refer to types of locations, such as kindergartens, parks, hawker centres etc. This package provides functions related to querying themes:
@@ -115,13 +132,13 @@ Population Query API endpoints allow users to pull socio-economic datasets by pl
 
 ```{r}
 # example: return occupation summary data and literacy summary data for Bedok and Yishun towns in year 2010
-get_pop_queries(token, c("getOccupation", "getLanguageLiterate"), c("Bedok", "Yishun"), "2010")
+get_pop_queries(token, c("getReligion", "getLanguageLiterate"), c("Bedok", "Yishun"), "2010")
 ```
 
 ### Route Service
-The Route Service API provides users a way to query the route taken from one point to another. It provides information about the total time and distance taken for the route, route instructions and other infomation e.g. elevation, for a variety of routes (public transport, drive, walk, cycle). This package provides three different functions associated with this API, each serving different purposes. 
+The Route Service API provides users a way to query the route taken from one point to another. It provides information about the total time and distance taken for the route, route instructions and other infomation e.g. elevation, for a variety of routes (public transport, drive, walk, cycle). This package provides two different functions associated with this API, each serving different purposes. 
 
-- `get_route()` returns all API output but with standardized column names, which allows for subsequent merging if desired. This is particularly useful as API output variable names may vary depending on parameters (e.g. start point is named differently between `route = drive` and `route = pt`). If desired, both status information and the results will be returned.
+- `get_summ_route()` returns only the total time, distance and optionally, geometry of the route between two points.
 
 ```{r}
 # example: return route data only in tibble format
@@ -141,3 +158,5 @@ get_travel(token, df,
     "start_lat", "start_lon", "end_lat", "end_lon",
     routes = c("cycle", "walk"))
 ```
+
+- In earlier releases of the package, a `get_route()` function was available to return the full API results in a standardised format. However, this is not very future-proof, especially as the format of the API returns may change over time. This function also is not critical for data analytics functions. Hence, this function is no longer included in the 2.0.0 release. However, if there are requests for this, please open an issue and I can further review.

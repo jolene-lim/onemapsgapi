@@ -12,7 +12,7 @@ get_travel(
   destination_lat,
   destination_lon,
   routes,
-  date = Sys.Date(),
+  date = format(Sys.Date(), "\%m-\%d-\%Y"),
   time = format(Sys.time(), format = "\%T"),
   pt_mode = "TRANSIT",
   pt_max_dist = NULL,
@@ -56,7 +56,7 @@ Original dataframe with total time and total distance for each route type.
 If an error occurs, the output row will be have \code{NA}s for the additional variables, along with a warning message.
 }
 \description{
-This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#route}{Route Service API}. It takes in a dataframe of start and end coordinates and returns the same dataframe with total time, total distance and optionally route geometry.
+This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/routing/}{Route Service API}. It takes in a dataframe of start and end coordinates and returns the same dataframe with total time, total distance and optionally route geometry.
 The function also accepts multiple arguments for `route` and `pt_mode`, allowing users to compare various route options.
 
 Note that if `as_wide = TRUE` is selected, any columns with identical names as the additional output columns will be overwritten.

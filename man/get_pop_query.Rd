@@ -19,17 +19,17 @@ get_pop_query(token, data_type, planning_area, year, gender = NULL)
 }
 \value{
 A tibble with 1 row and values for all the corresponding variables returned by the API endpoint.
-If an error occurs, the function will return a NULL value
+If an error occurs, the function returns NULL and a warning message. This differs from the error handling of other functions in this package to prevent collective failure for \code{get_pop_queries}.
 }
 \description{
-This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#population-query}{Population Query API}. It only allows for querying of one data type (i.e. one of the API endpoints) for a particular town and year.
+This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/populationquery}{Population Query API}. It only allows for querying of one data type (i.e. one of the API endpoints) for a particular town and year.
 }
 \examples{
 # output with no NA
-\dontrun{get_pop_query(token, "getOccupation", "Yishun", "2010")}
+\dontrun{get_pop_query(token, "getReligion", "Yishun", "2010")}
 \dontrun{get_pop_query(token, "getModeOfTransportSchool", "Bishan", "2015", "female")}
 
-# note behaviour with gender parameter not specified
+# if gender parameter is not specified, results for both genders and total will be returned
 \dontrun{get_pop_query(token, "getMaritalStatus", "Bedok", "2010")}
 \dontrun{get_pop_query(token, "getEthnicGroup", "Bedok", "2010")}
 \dontrun{get_pop_query(token, "getPopulationAgeGroup", "Bedok", "2010")}

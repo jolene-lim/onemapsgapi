@@ -1,7 +1,7 @@
 #' Get Travel Time, Distance and Route
 #'
 #' @description
-#' This function is a wrapper for the \href{https://www.onemap.gov.sg/docs/#route}{Route Service API}. It takes in a dataframe of start and end coordinates and returns the same dataframe with total time, total distance and optionally route geometry.
+#' This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/routing/}{Route Service API}. It takes in a dataframe of start and end coordinates and returns the same dataframe with total time, total distance and optionally route geometry.
 #' The function also accepts multiple arguments for `route` and `pt_mode`, allowing users to compare various route options.
 #'
 #' Note that if `as_wide = TRUE` is selected, any columns with identical names as the additional output columns will be overwritten.
@@ -63,7 +63,7 @@
 #'     routes = c("cycle", "walk"))}
 
 
-get_travel <- function(token, df, origin_lat, origin_lon, destination_lat, destination_lon, routes, date = Sys.Date(), time = format(Sys.time(), format = "%T"), pt_mode = "TRANSIT", pt_max_dist = NULL, as_wide = TRUE, parallel = FALSE, route_geom = FALSE) {
+get_travel <- function(token, df, origin_lat, origin_lon, destination_lat, destination_lon, routes, date = format(Sys.Date(), "%m-%d-%Y"), time = format(Sys.time(), format = "%T"), pt_mode = "TRANSIT", pt_max_dist = NULL, as_wide = TRUE, parallel = FALSE, route_geom = FALSE) {
 
   # ensure route_geom is returned only if long output
   route_geom <- ifelse(as_wide, FALSE, route_geom)
@@ -79,7 +79,9 @@ get_travel <- function(token, df, origin_lat, origin_lon, destination_lat, desti
   names(output_list) <- as.character(routes)
 
   # subset variables used to query API
-  var_df <- select(df, olat = origin_lat, olon = origin_lon, dlat = destination_lat, dlon = destination_lon)
+  var_df <- df |>
+    select(origin_lat, origin_lon, destination_lat, destination_lon) |>
+    rename(olat = origin_lat, olon = origin_lon, dlat = destination_lat, dlon = destination_lon)
 
   # set up parallel option if requested
   if (parallel) {
