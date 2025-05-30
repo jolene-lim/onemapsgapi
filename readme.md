@@ -33,20 +33,12 @@ Currently, the following API endpoints are supported:
 
 | API | Coverage | Supported Endpoints |
 | --- | --- | --- |
-<<<<<<< HEAD
-| **Post** | :white_check_mark: Full | [getToken](https://www.onemap.gov.sg/docs/#authentication-service-post) |
-| **Themes** | :white_check_mark: Full | [checkThemeStatus](https://www.onemap.gov.sg/docs/#check-theme-status), [getThemeInfo](https://www.onemap.gov.sg/docs/#get-theme-info), [getAllThemesInfo](https://www.onemap.gov.sg/docs/#get-all-themes-info), [retrieveTheme](https://www.onemap.gov.sg/docs/#retrieve-theme)
-| **Planning Area** | :white_check_mark: Full | [getAllPlanningarea](https://www.onemap.gov.sg/docs/#planning-area-polygons), [getPlanningareaNames](https://www.onemap.gov.sg/docs/#names-of-planning-area), [getPlanningarea](https://www.onemap.gov.sg/docs/#planning-area-query)
-| **Population Query** | :white_check_mark: Full | [getEconomicStatus](https://www.onemap.gov.sg/docs/#economic-status-data), [getEducationAttending](https://www.onemap.gov.sg/docs/#education-status-data), [getEthnicGroup](https://www.onemap.gov.sg/docs/#ethnic-distribution-data), [getHouseholdMonthlyIncomeWork](https://www.onemap.gov.sg/docs/#work-income-for-household-monthly), [getHouseholdSize](https://www.onemap.gov.sg/docs/#household-size-data), [getHouseholdStructure](https://www.onemap.gov.sg/docs/#household-structure-data), [getIncomeFromWork](https://www.onemap.gov.sg/docs/#income-from-work-data), [getIndustry](https://www.onemap.gov.sg/docs/#industry-of-population-data), [getLanguageLiterate](https://www.onemap.gov.sg/docs/#language-literacy-data), [getMaritalStatus](https://www.onemap.gov.sg/docs/#marital-status-data), [getModeOfTransportSchool](https://www.onemap.gov.sg/docs/#mode-of-transports-to-school-data), [getModeOfTransportWork](https://www.onemap.gov.sg/docs/#mode-of-transport-to-work-data), [getOccupation](https://www.onemap.gov.sg/docs/#occupation-data), [getPopulationAgeGroup](https://www.onemap.gov.sg/docs/#age-data), [getReligion](https://www.onemap.gov.sg/docs/#religion-data), [getSpokenAtHome](https://www.onemap.gov.sg/docs/#spoken-language-data), [getTenancy](https://www.onemap.gov.sg/docs/#tenancy-data), [getTypeOfDwellingHousehold](https://www.onemap.gov.sg/docs/#tenancy-data), [getTypeOfDwellingPop](https://www.onemap.gov.sg/docs/#dwelling-type-population-data)
-| **Routing Service** | :white_check_mark: Full | [route](https://www.onemap.gov.sg/docs/#routing-service)<br> **Note**: [Route Decoder](https://docs.onemap.sg/#routing-service) V1.1.0 features internal decoding capabilities via the `googlePolylines` package
-=======
 | **Authentication** | :white_check_mark: Full | [getToken](https://www.onemap.gov.sg/apidocs/authentication) |
 | **Search** | :white_check_mark: Full | [search](https://www.onemap.gov.sg/apidocs/search) |
 | **Themes** | :white_check_mark: Full | [checkThemeStatus](https://www.onemap.gov.sg/apidocs/themes/#checkThemeStatus), [getThemesInfo](https://www.onemap.gov.sg/apidocs/themes/#getThemesInfo), [getAllThemesInfo](https://www.onemap.gov.sg/apidocs/themes/#getAllThemesInfo), [retrieveTheme](https://www.onemap.gov.sg/apidocs/themes/#retrieveTheme)
 | **Planning Area** | :white_check_mark: Full | [getPlanningarea](https://www.onemap.gov.sg/apidocs/planningarea/#planningAreaQuery), [getPlanningareaNames](https://www.onemap.gov.sg/apidocs/planningarea/#namesofPlanningArea), [getPlanningarea](https://www.onemap.gov.sg/apidocs/planningarea/#planningAreaQuery)
 | **Population Query** | :white_check_mark: Full | Check [Population Query Docs](https://www.onemap.gov.sg/apidocs/populationquery) for the full list of endpoints. All endpoints are supported in this package.
 | **Routing Service** | :white_check_mark: Full | [route](https://www.onemap.gov.sg/apidocs/routing/)
->>>>>>> dev
 
 ## Usage
 ### Authentication
