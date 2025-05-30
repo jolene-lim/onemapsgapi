@@ -18,7 +18,7 @@ NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 opts_chunk$set(purl = NOT_CRAN)
 ```
 
-The OneMapSGAPI package provides useful wrappers for the [OneMapSG API](https://docs.onemap.sg/#introduction) client. It allows users to easily query spatial data from the API in a tidy format and provides additional functionalities to allow easy data manipulation. 
+The OneMapSGAPI package provides useful wrappers for the [OneMapSG API](https://www.onemap.gov.sg/apidocs/) client. It allows users to easily query spatial data from the API in a tidy format and provides additional functionalities to allow easy data manipulation. 
 
 ```{r, warning = FALSE}
 library(onemapsgapi)
@@ -223,7 +223,7 @@ get_planning_polygon(token, "invalidlat", "invalidlon")
 ```
 
 ## Population Query
-These functions are a wrapper for the [Population Query API](https://docs.onemap.sg/#population-query). Population Query API endpoints allow users to pull socio-economic datasets by planning area, which each endpoint representing a dataset (e.g. `getPopulationAgeGroup` provides age group summary statistics by planning area). This package combines querying different Popquery API endpoints into single functions. 
+These functions are a wrapper for the [Population Query API](https://www.onemap.gov.sg/apidocs/populationquery). Population Query API endpoints allow users to pull socio-economic datasets by planning area, which each endpoint representing a dataset (e.g. `getPopulationAgeGroup` provides age group summary statistics by planning area). This package combines querying different Popquery API endpoints into single functions. 
 
 ### Multiple Queries
 The function `get_pop_queries()` allows users to query multiple datasets for multiple towns, years and genders. 

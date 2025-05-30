@@ -23,7 +23,7 @@ If \code{read = "sf"}, the function returns a 1 x 2 "sf" dataframe: "name" (name
 If an error occurs, the function throws an error with the API error message and status code.
 }
 \description{
-This function is a wrapper for the \href{https://www.onemap.gov.sg/api/public/popapi/getPlanningarea}{Planning Area Query API}. It returns the spatial polygon data matching the specified location point, either in raw format or as an sf tibble.
+This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/planningarea/#planningAreaPolygon}{Planning Area Query API}. It returns the spatial polygon data matching the specified location point, either in raw format or as an sf tibble.
 }
 \note{
 If the user specifies a \code{return_spatial = TRUE} but does not have the \code{sf} package installed, the function will return the raw JSON and print a warning message.

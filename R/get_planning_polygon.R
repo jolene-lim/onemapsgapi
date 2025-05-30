@@ -1,7 +1,7 @@
 #' Get Planning Polygon for a Specific Point
 #'
 #' @description
-#' This function is a wrapper for the \href{https://www.onemap.gov.sg/api/public/popapi/getPlanningarea}{Planning Area Query API}. It returns the spatial polygon data matching the specified location point, either in raw format or as an sf tibble.
+#' This function is a wrapper for the \href{https://www.onemap.gov.sg/apidocs/planningarea/#planningAreaPolygon}{Planning Area Query API}. It returns the spatial polygon data matching the specified location point, either in raw format or as an sf tibble.
 #'
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param lat Latitude of location point

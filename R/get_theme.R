@@ -5,7 +5,7 @@
 #'
 #' @param token User's API token. This can be retrieved using \code{\link{get_token}}
 #' @param theme OneMap theme in its \code{QUERYNAME} format. A tibble of available themes can be retrieved using \code{\link{search_themes}}
-#' @param extents Optional, Location Extents for search. This should be in the format "Lat1,\%20Lng1,Lat2,\%20Lng2". For more information, consult the \href{https://docs.onemap.sg/#retrieve-theme}{API Documentation}.
+#' @param extents Optional, Location Extents for search. This should be in the format "Lat1,\%20Lng1,Lat2,\%20Lng2". For more information, consult the \href{https://www.onemap.gov.sg/apidocs/themes/#retrieveTheme}{API Documentation}.
 #' @param return_info Default = \code{FALSE}. If \code{FALSE}, function only returns a tibble for query results. If \code{TRUE}, function returns output as a list containing a tibble for query information and a tibble for query results.
 #' @param return_spatial Default = \code{FALSE}. If \code{FALSE}, function returns a tibble. If \code{TRUE}, function returns an \code{sf} tibble.
 #'
